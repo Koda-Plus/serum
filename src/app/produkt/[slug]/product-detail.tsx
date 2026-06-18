@@ -4,11 +4,11 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { ShoppingBag, Check, Truck, RotateCcw, ShieldCheck, ChevronRight } from 'lucide-react'
+import { ShoppingBag, Truck, RotateCcw, ShieldCheck, ChevronRight } from 'lucide-react'
 import { Product } from '@/data/products'
-import { Badge } from '@/components/ui/badge'
+import { Badge, PriceChip, BezBadge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { ProductCard } from '@/components/shop/product-card'
-import { accentBg } from '@/components/shop/product-card'
 import { formatPLN, cn } from '@/lib/utils'
 import { useCart } from '@/store/cart'
 
@@ -86,9 +86,7 @@ export function ProductDetail({ product, related }: { product: Product; related:
           <h1 className="text-graffiti mt-2 text-[clamp(1.9rem,4.5vw,3.2rem)] leading-[0.95] text-bone">{product.name}</h1>
 
           <div className="mt-5 flex items-end gap-3">
-            <span className={cn('text-graffiti inline-flex items-center px-3 py-1.5 text-2xl shadow-[3px_3px_0_#060706]', accentBg[product.accent])}>
-              {formatPLN(product.price)}
-            </span>
+            <PriceChip size="pdp">{formatPLN(product.price)}</PriceChip>
             {hasDiscount && (
               <span className="pb-1 font-mono text-sm text-bone/40 line-through">{formatPLN(product.oldPrice as number)}</span>
             )}
@@ -106,10 +104,8 @@ export function ProductDetail({ product, related }: { product: Product; related:
                     key={s}
                     type="button"
                     onClick={() => setSize(s)}
-                    className={cn(
-                      'text-graffiti min-w-[48px] border-2 px-3 py-2 text-sm transition-all',
-                      size === s ? 'border-acid bg-acid text-bone' : 'border-ink-300 text-bone hover:border-bone/60',
-                    )}
+                    aria-pressed={size === s}
+                    className="chip-toggle min-w-[48px] px-3 py-2 text-sm"
                   >
                     {s}
                   </button>
@@ -120,16 +116,24 @@ export function ProductDetail({ product, related }: { product: Product; related:
 
           {/* CTA */}
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <button
-              type="button"
+            <Button
+              variant="bone"
+              size="lg"
               onClick={handleAdd}
-              className={cn('btn-spray min-w-[220px] text-base', added && '!bg-[#ffd666]')}
+              success={added}
+              successLabel="Dodano"
+              className="min-w-[220px]"
             >
-              {added ? (<><Check size={18} /> Dodano</>) : (<><ShoppingBag size={18} /> Dodaj do koszyka</>)}
-            </button>
-            <button type="button" onClick={() => toggle(true)} className="btn-spray btn-ghost text-base">
+              <ShoppingBag size={18} /> Dodaj do koszyka
+            </Button>
+            <Button variant="ghost" size="lg" onClick={() => toggle(true)}>
               Koszyk
-            </button>
+            </Button>
+          </div>
+
+          {/* brand voice — Ero's own words, designed as a quality stamp */}
+          <div className="mt-7">
+            <BezBadge />
           </div>
 
           {/* trust row */}

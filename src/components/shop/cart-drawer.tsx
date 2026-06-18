@@ -2,10 +2,12 @@
 
 import { X, Plus, Minus, Trash2, ShoppingBag } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useCart } from '@/store/cart'
-import { formatPLN } from '@/lib/utils'
+import { formatPLN, cn } from '@/lib/utils'
+import { Button, ButtonLink, IconButton } from '@/components/ui/button'
+import { FREE_SHIPPING_PLN, pointsForSpend } from '@/data/loyalty'
+import { ArrowRight } from 'lucide-react'
 
 export function CartDrawer() {
   const { items, isOpen, toggle, remove, updateQty, total, clear } = useCart()
@@ -34,14 +36,9 @@ export function CartDrawer() {
                 <div className="font-mono text-[11px] uppercase tracking-[0.3em] text-acid">// koszyk</div>
                 <h3 className="text-graffiti text-3xl text-bone">Twój skład</h3>
               </div>
-              <button
-                type="button"
-                onClick={() => toggle(false)}
-                aria-label="Zamknij"
-                className="rounded-sm border-2 border-bone p-2 text-bone transition hover:border-acid hover:text-acid"
-              >
+              <IconButton variant="outline" aria-label="Zamknij" onClick={() => toggle(false)}>
                 <X size={18} />
-              </button>
+              </IconButton>
             </div>
 
             <div className="flex-1 overflow-y-auto p-5">
@@ -52,13 +49,9 @@ export function CartDrawer() {
                   <p className="max-w-xs text-sm text-bone/60">
                     Wrzuć bluzę Serum x Tempz albo winyl z półki. Wejdź na sklep.
                   </p>
-                  <Link
-                    href="/sklep"
-                    onClick={() => toggle(false)}
-                    className="text-graffiti bg-acid px-5 py-3 text-sm text-bone shadow-[4px_4px_0_#060706] transition-all hover:bg-acid-deep"
-                  >
+                  <ButtonLink href="/sklep" variant="violet" size="md" onClick={() => toggle(false)}>
                     wejdź na sklep
-                  </Link>
+                  </ButtonLink>
                 </div>
               ) : (
                 <ul className="space-y-4">
@@ -113,27 +106,19 @@ export function CartDrawer() {
 
             {items.length > 0 && (
               <div className="border-t border-ink-300 bg-ink-50 p-5">
+                <CartLoyaltyNudge total={total()} onClose={() => toggle(false)} />
                 <div className="mb-3 flex items-baseline justify-between">
                   <span className="font-mono text-xs uppercase tracking-[0.3em] text-bone/60">razem</span>
                   <span className="text-graffiti text-3xl text-acid">{formatPLN(total())}</span>
                 </div>
-                <div className="mb-3 text-xs text-bone/50">
-                  Darmowa wysyłka od 299 zł / Płatność online / Dostawa 48h
-                </div>
+                <div className="mb-3 text-xs text-bone/50">Płatność online / Dostawa 48h / 14 dni na zwrot</div>
                 <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={clear}
-                    className="border-2 border-ink-300 px-3 py-3 text-xs uppercase tracking-[0.2em] text-bone/60 transition hover:border-magenta hover:text-magenta"
-                  >
+                  <Button variant="danger" size="sm" onClick={clear}>
                     wyczyść
-                  </button>
-                  <button
-                    type="button"
-                    className="text-graffiti flex-1 bg-gold px-4 py-3 text-sm text-ink shadow-[4px_4px_0_#060706] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] hover:bg-[#ffd666] hover:shadow-[6px_6px_0_#060706]"
-                  >
+                  </Button>
+                  <Button variant="bone" size="md" className="flex-1">
                     zamawiam, {formatPLN(total())}
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -141,5 +126,46 @@ export function CartDrawer() {
         </>
       )}
     </AnimatePresence>
+  )
+}
+
+/** The "buy one more" mechanic: free-shipping progress + ML earned toward the
+ *  Serum w Żyłach club. Makes the upside of a bigger basket visible at checkout. */
+function CartLoyaltyNudge({ total, onClose }: { total: number; onClose: () => void }) {
+  const remaining = Math.max(0, FREE_SHIPPING_PLN - total)
+  const pct = Math.min(100, (total / FREE_SHIPPING_PLN) * 100)
+  const pts = pointsForSpend(total)
+  const free = remaining <= 0
+
+  return (
+    <a
+      href="/#klub"
+      onClick={onClose}
+      className="group mb-4 block border border-acid/30 bg-ink/60 p-3 transition-colors hover:border-acid/60"
+    >
+      <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em]">
+        <span className="text-toxic">Skład Serum</span>
+        <span className="text-bone/55">ten zakup = +{pts} pkt</span>
+      </div>
+      <p className="mt-2 text-[12px] leading-snug text-bone/75">
+        {free ? (
+          <>
+            <span className="text-acid">Darmowa wysyłka odblokowana.</span> Dobierz drugą sztukę —{' '}
+            <span className="text-bone">nie zawijaj się po jednej</span>, każda to punkty w składzie.
+          </>
+        ) : (
+          <>
+            Dobierz za <span className="text-bone">{formatPLN(remaining)}</span> i łapiesz{' '}
+            <span className="text-acid">darmową wysyłkę</span> — nie zawijaj się po jednej.
+          </>
+        )}
+      </p>
+      <div className="mt-2 h-1.5 overflow-hidden bg-ink-200">
+        <div className={cn('h-full bg-gradient-to-r from-acid to-toxic transition-[width]')} style={{ width: `${pct}%` }} />
+      </div>
+      <span className="mt-2 inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.18em] text-bone/55 transition-colors group-hover:text-acid">
+        Rangi składu <ArrowRight size={11} />
+      </span>
+    </a>
   )
 }

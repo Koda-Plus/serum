@@ -5,16 +5,18 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Plus } from 'lucide-react'
 import { Product, Accent } from '@/data/products'
-import { Badge } from '@/components/ui/badge'
+import { Badge, MetaChip, DiscountChip, PriceChip } from '@/components/ui/badge'
 import { formatPLN, cn } from '@/lib/utils'
 import { useCart } from '@/store/cart'
 
+// Gold has been removed from the palette — gold-accent products fall back to
+// chrome so nothing renders yellow.
 export const accentBg: Record<Accent, string> = {
   acid: 'bg-acid text-bone',
   blue: 'bg-blue text-ink',
   violet: 'bg-violet text-ink',
   magenta: 'bg-magenta text-bone',
-  gold: 'bg-gold text-ink',
+  gold: 'bg-chrome text-ink',
   chrome: 'bg-chrome text-ink',
 }
 export const accentText: Record<Accent, string> = {
@@ -22,7 +24,7 @@ export const accentText: Record<Accent, string> = {
   blue: 'group-hover:text-blue',
   violet: 'group-hover:text-violet',
   magenta: 'group-hover:text-magenta',
-  gold: 'group-hover:text-gold',
+  gold: 'group-hover:text-chrome',
   chrome: 'group-hover:text-chrome',
 }
 export const accentRing: Record<Accent, string> = {
@@ -30,7 +32,7 @@ export const accentRing: Record<Accent, string> = {
   blue: 'group-hover:border-blue',
   violet: 'group-hover:border-violet',
   magenta: 'group-hover:border-magenta',
-  gold: 'group-hover:border-gold',
+  gold: 'group-hover:border-chrome',
   chrome: 'group-hover:border-chrome',
 }
 
@@ -59,38 +61,41 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
             alt={product.name}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 320px"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+            className={cn(
+              'object-cover transition-transform duration-500 group-hover:scale-[1.05]',
+              !product.inStock && 'opacity-50 grayscale',
+            )}
           />
-          {/* badges */}
+          {/* badges (sold-out trumps everything) */}
           <div className="absolute left-2.5 top-2.5 flex flex-col gap-1.5">
-            {product.badge && <Badge label={product.badge} />}
+            {!product.inStock ? <Badge label="WYPRZEDANE" /> : product.badge && <Badge label={product.badge} />}
           </div>
           {/* category chip */}
           <div className="absolute right-2.5 top-2.5">
-            <span className="bg-ink/85 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.22em] text-bone/75 backdrop-blur-sm">
-              {product.categoryLabel}
-            </span>
+            <MetaChip>{product.categoryLabel}</MetaChip>
           </div>
           {/* bottom fade */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-ink/70 to-transparent" />
           {/* quick add */}
-          <button
-            type="button"
-            aria-label="Dodaj do koszyka"
-            onClick={(e) => {
-              e.preventDefault()
-              add({
-                slug: product.slug,
-                name: product.name,
-                price: product.price,
-                image: product.image,
-                variant: product.sizes?.[0],
-              })
-            }}
-            className="absolute bottom-2.5 right-2.5 flex h-10 w-10 translate-y-2 items-center justify-center bg-gold text-ink opacity-0 shadow-[3px_3px_0_#060706] transition-all duration-300 hover:bg-[#ffd666] group-hover:translate-y-0 group-hover:opacity-100"
-          >
-            <Plus size={18} strokeWidth={3} />
-          </button>
+          {product.inStock && (
+            <button
+              type="button"
+              aria-label="Dodaj do koszyka"
+              onClick={(e) => {
+                e.preventDefault()
+                add({
+                  slug: product.slug,
+                  name: product.name,
+                  price: product.price,
+                  image: product.image,
+                  variant: product.sizes?.[0],
+                })
+              }}
+              className="absolute bottom-2.5 right-2.5 flex h-10 w-10 translate-y-2 items-center justify-center bg-acid text-bone opacity-0 shadow-[3px_3px_0_var(--color-shadow)] transition-all duration-300 hover:bg-acid-deep group-hover:translate-y-0 group-hover:opacity-100"
+            >
+              <Plus size={18} strokeWidth={3} />
+            </button>
+          )}
         </div>
 
         <div className="mt-3 flex flex-1 flex-col">
@@ -98,13 +103,11 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
             {product.name}
           </h3>
           <div className="mt-auto flex items-center justify-between gap-2 pt-3">
-            <span className={cn('text-graffiti inline-flex items-center gap-1.5 px-2.5 py-1 text-sm shadow-[2px_2px_0_#060706]', accentBg[product.accent])}>
-              {formatPLN(product.price)}
-            </span>
+            <PriceChip>{formatPLN(product.price)}</PriceChip>
             {hasDiscount && (
               <span className="flex items-center gap-1.5">
                 <span className="font-mono text-[11px] text-bone/40 line-through">{formatPLN(product.oldPrice as number)}</span>
-                <span className="bg-magenta px-1.5 py-0.5 font-mono text-[10px] font-bold text-bone">−{pct}%</span>
+                <DiscountChip pct={pct} />
               </span>
             )}
           </div>

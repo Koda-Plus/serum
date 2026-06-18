@@ -1,100 +1,227 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Play, Pause, SkipBack, SkipForward, Radio } from 'lucide-react'
+import { Play, Pause, Radio, RotateCcw, RotateCw, Loader2 } from 'lucide-react'
 
-interface Track {
-  artist: string
-  title: string
-  cover: string
-  len: number // seconds
+/**
+ * Serum Radio — the sticky bottom bar. Custom graffiti-styled chrome wrapping a
+ * hidden Spotify embed, driven through the official Spotify IFrame API so the
+ * play button actually plays the track (JWP-site style). Featured cut:
+ * Ero JWP — "Nowy Dobrobyt" (Ero is the founder of Serum).
+ */
+
+const TRACK = {
+  artist: 'ERO JWP',
+  title: 'Nowy Dobrobyt',
+  cover: '/images/serum/ero-nowy-dobrobyt.jpg',
+  uri: 'spotify:track:1UtVtaTsolXpmJwS4Z0e4L',
+  url: 'https://open.spotify.com/track/1UtVtaTsolXpmJwS4Z0e4L',
 }
 
-const queue: Track[] = [
-  { artist: 'ERO JWP', title: 'Eroizm', cover: '/images/serum/ero-eroizm-lp-cd-wersja-preorder.jpg', len: 214 },
-  { artist: 'JWP / BC', title: 'Ostatni z Gatunku', cover: '/images/serum/jwp-bc-feat-relo-akhenaton-ostatni-z-gatunku-les-derniers-de-lespece-lp-winyl-czarny.png', len: 198 },
-  { artist: 'WENA', title: 'Nowa Ziemia', cover: '/images/serum/wena-nowa-ziemia-winyl.jpg', len: 232 },
-  { artist: 'Włodi', title: 'Wszystko z Dymem', cover: '/images/serum/wlodi-wszystko-z-dymem-winyl-edycja-limitowana.jpg', len: 187 },
-  { artist: 'ERO x KOSI', title: 'Blackbook', cover: '/images/serum/ero-x-kosi-blackbook-cd.jpg', len: 176 },
-]
+type SpotifyController = {
+  togglePlay: () => void
+  seek: (seconds: number) => void
+  addListener: (event: string, cb: (e: { data: PlaybackData }) => void) => void
+}
+type PlaybackData = { position: number; duration: number; isPaused: boolean; isBuffering?: boolean }
 
-const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`
+declare global {
+  interface Window {
+    onSpotifyIframeApiReady?: (api: {
+      createController: (
+        el: HTMLElement,
+        opts: { uri: string; width: string | number; height: string | number },
+        cb: (controller: SpotifyController) => void,
+      ) => void
+    }) => void
+  }
+}
+
+const fmt = (ms: number) => {
+  const s = Math.max(0, Math.floor(ms / 1000))
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
+}
 
 export function SerumRadio() {
+  const hostRef = useRef<HTMLDivElement | null>(null)
+  const controllerRef = useRef<SpotifyController | null>(null)
+  const [ready, setReady] = useState(false)
   const [playing, setPlaying] = useState(false)
-  const [idx, setIdx] = useState(0)
-  const [elapsed, setElapsed] = useState(0)
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null)
-  const track = queue[idx]
-
-  const go = (n: number) => {
-    setIdx((i) => (n + queue.length) % queue.length)
-    setElapsed(0)
-  }
+  const [dur, setDur] = useState(0)
+  // Spotify only reports position ~1×/sec, which makes the bar jump in steps.
+  // We keep the last reported position + its timestamp and tick a smooth
+  // display position locally between reports.
+  const [displayMs, setDisplayMs] = useState(0)
+  const posRef = useRef(0)
+  const updatedRef = useRef(0)
 
   useEffect(() => {
-    if (!playing) {
-      if (timer.current) clearInterval(timer.current)
-      return
-    }
-    timer.current = setInterval(() => {
-      setElapsed((e) => {
-        if (e + 1 >= track.len) {
-          setIdx((i) => (i + 1) % queue.length)
-          return 0
-        }
-        return e + 1
-      })
-    }, 1000)
-    return () => {
-      if (timer.current) clearInterval(timer.current)
-    }
-  }, [playing, idx, track.len])
+    let cancelled = false
 
-  const pct = Math.min(100, (elapsed / track.len) * 100)
+    const init = (api: Parameters<NonNullable<Window['onSpotifyIframeApiReady']>>[0]) => {
+      if (cancelled || !hostRef.current || controllerRef.current) return
+      api.createController(
+        hostRef.current,
+        { uri: TRACK.uri, width: '100%', height: 80 },
+        (controller) => {
+          controllerRef.current = controller
+          // Spotify creates the embed iframe with loading="lazy"; force eager so
+          // it loads even though it's visually hidden behind the bar.
+          hostRef.current?.querySelector('iframe')?.setAttribute('loading', 'eager')
+          // The controller is usable as soon as we hold it; the separate
+          // 'ready' event often fires before we can subscribe, so don't gate
+          // the UI on it — enable controls now.
+          if (!cancelled) setReady(true)
+          controller.addListener('ready', () => !cancelled && setReady(true))
+          controller.addListener('playback_update', (e) => {
+            if (cancelled) return
+            posRef.current = e.data.position
+            updatedRef.current = Date.now()
+            setDur(e.data.duration)
+            setPlaying(!e.data.isPaused)
+            setDisplayMs(e.data.position)
+          })
+        },
+      )
+    }
+
+    window.onSpotifyIframeApiReady = init
+
+    const SRC = 'https://open.spotify.com/embed/iframe-api/v1'
+    let script = document.querySelector<HTMLScriptElement>(`script[src="${SRC}"]`)
+    if (!script) {
+      script = document.createElement('script')
+      script.src = SRC
+      script.async = true
+      document.body.appendChild(script)
+    }
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  // smooth ticker — advance the displayed position between Spotify's sparse reports
+  useEffect(() => {
+    if (!playing) return
+    const id = setInterval(() => {
+      const next = posRef.current + (Date.now() - updatedRef.current)
+      setDisplayMs(dur > 0 ? Math.min(dur, next) : next)
+    }, 150)
+    return () => clearInterval(id)
+  }, [playing, dur])
+
+  const toggle = useCallback(() => controllerRef.current?.togglePlay(), [])
+  const nudge = useCallback(
+    (delta: number) => controllerRef.current?.seek(Math.max(0, displayMs / 1000 + delta)),
+    [displayMs],
+  )
+  const seekToFraction = useCallback(
+    (f: number) => {
+      if (dur <= 0) return
+      const secs = Math.max(0, Math.min(1, f)) * (dur / 1000)
+      controllerRef.current?.seek(secs)
+      posRef.current = secs * 1000
+      updatedRef.current = Date.now()
+      setDisplayMs(secs * 1000)
+    },
+    [dur],
+  )
+
+  const pct = dur > 0 ? Math.min(100, (displayMs / dur) * 100) : 0
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-acid/25 bg-ink/95 backdrop-blur-md">
-      {/* progress line on the very top edge */}
-      <div className="absolute inset-x-0 top-0 h-[3px] bg-ink-200">
-        <div className="h-full bg-acid transition-[width] duration-1000 ease-linear" style={{ width: `${pct}%` }} />
-      </div>
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-acid/30 bg-ink/95 shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md">
+      {/* progress line on the very top edge — click anywhere to seek */}
+      <button
+        type="button"
+        aria-label="Przewiń utwór"
+        disabled={!ready || dur <= 0}
+        onClick={(e) => {
+          const r = e.currentTarget.getBoundingClientRect()
+          seekToFraction((e.clientX - r.left) / r.width)
+        }}
+        className="group/seek absolute inset-x-0 top-0 z-10 h-[5px] cursor-pointer bg-ink-200 transition-[height] duration-150 hover:h-[9px] disabled:cursor-default"
+      >
+        <div
+          className="relative h-full bg-gradient-to-r from-acid to-toxic transition-[width] duration-150 ease-linear"
+          style={{ width: `${pct}%` }}
+        >
+          <span className="absolute right-0 top-1/2 h-3 w-3 -translate-y-1/2 translate-x-1/2 rounded-full bg-bone opacity-0 shadow-[0_0_10px_var(--color-acid)] transition-opacity group-hover/seek:opacity-100" />
+        </div>
+      </button>
 
       <div className="mx-auto flex max-w-[1340px] items-center gap-3 px-3 py-2.5 sm:gap-4 sm:px-6 lg:px-8">
-        {/* cover */}
-        <div className={`relative h-12 w-12 shrink-0 overflow-hidden border border-ink-300 bg-ink-100 ${playing ? 'animate-spray-flicker' : ''}`}>
-          <Image src={track.cover} alt={track.title} fill sizes="48px" className="object-cover" />
-        </div>
+        {/* cover — doubles as a play/pause toggle */}
+        <button
+          type="button"
+          onClick={toggle}
+          disabled={!ready}
+          aria-label={playing ? 'Pauza' : 'Odtwórz'}
+          className={`group/cover relative h-12 w-12 shrink-0 overflow-hidden border bg-ink-100 transition-colors disabled:cursor-wait ${playing ? 'border-acid' : 'border-acid/30'}`}
+        >
+          <Image src={TRACK.cover} alt={`${TRACK.artist} — ${TRACK.title}`} fill sizes="48px" className="object-cover" />
+          <span className={`absolute inset-0 grid place-items-center bg-ink/55 text-bone transition-opacity ${playing ? 'opacity-0 group-hover/cover:opacity-100' : 'opacity-100 group-hover/cover:opacity-100 sm:opacity-0 sm:group-hover/cover:opacity-100'}`}>
+            {playing ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" className="ml-0.5" />}
+          </span>
+        </button>
 
         {/* controls */}
         <div className="flex shrink-0 items-center gap-1">
-          <button type="button" onClick={() => go(idx - 1)} aria-label="Poprzedni" className="hidden h-8 w-8 items-center justify-center text-bone/60 transition-colors hover:text-acid sm:flex">
-            <SkipBack size={16} fill="currentColor" />
+          <button
+            type="button"
+            onClick={() => nudge(-15)}
+            aria-label="Cofnij 15 sekund"
+            disabled={!ready}
+            className="hidden h-8 w-8 items-center justify-center text-bone/55 transition-colors hover:text-acid disabled:opacity-30 sm:flex"
+          >
+            <RotateCcw size={15} />
           </button>
           <button
             type="button"
-            onClick={() => setPlaying((p) => !p)}
+            onClick={toggle}
             aria-label={playing ? 'Pauza' : 'Odtwórz'}
-            className="flex h-10 w-10 items-center justify-center bg-acid text-bone shadow-[3px_3px_0_#08060f] transition-all hover:bg-acid-deep active:translate-x-[1px] active:translate-y-[1px]"
+            disabled={!ready}
+            className="flex h-10 w-10 items-center justify-center bg-acid text-bone shadow-[3px_3px_0_var(--color-shadow)] transition-all hover:bg-acid-deep active:translate-x-[1px] active:translate-y-[1px] disabled:cursor-wait disabled:bg-ink-300"
           >
-            {playing ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" className="ml-0.5" />}
+            {!ready ? (
+              <Loader2 size={18} className="animate-spin" />
+            ) : playing ? (
+              <Pause size={18} fill="currentColor" />
+            ) : (
+              <Play size={18} fill="currentColor" className="ml-0.5" />
+            )}
           </button>
-          <button type="button" onClick={() => go(idx + 1)} aria-label="Następny" className="flex h-8 w-8 items-center justify-center text-bone/60 transition-colors hover:text-acid">
-            <SkipForward size={16} fill="currentColor" />
+          <button
+            type="button"
+            onClick={() => nudge(15)}
+            aria-label="Do przodu 15 sekund"
+            disabled={!ready}
+            className="hidden h-8 w-8 items-center justify-center text-bone/55 transition-colors hover:text-acid disabled:opacity-30 sm:flex"
+          >
+            <RotateCw size={15} />
           </button>
         </div>
 
         {/* track info */}
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="hidden items-center gap-1 rounded-sm bg-acid/15 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.22em] text-toxic sm:inline-flex">
-              <Radio size={10} /> Serum Radio
+            <span className="hidden items-center gap-1.5 rounded-sm bg-acid/15 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.22em] text-toxic sm:inline-flex">
+              {playing ? (
+                <span className="relative flex h-1.5 w-1.5" aria-hidden>
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-acid opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-acid" />
+                </span>
+              ) : (
+                <Radio size={10} />
+              )}
+              Serum Radio
             </span>
             <span className="truncate">
-              <span className="text-graffiti text-sm text-bone">{track.title}</span>
-              <span className="ml-2 font-mono text-[11px] uppercase tracking-[0.12em] text-bone/45">{track.artist}</span>
+              <span className="text-graffiti text-sm text-bone">{TRACK.title}</span>
+              <span className="ml-2 font-mono text-[11px] uppercase tracking-[0.12em] text-bone/45">{TRACK.artist}</span>
             </span>
           </div>
           {/* slim inline progress on mobile */}
@@ -102,14 +229,14 @@ export function SerumRadio() {
             <div className="h-[3px] flex-1 overflow-hidden bg-ink-200">
               <div className="h-full bg-acid" style={{ width: `${pct}%` }} />
             </div>
-            <span className="font-mono text-[9px] text-bone/40">{fmt(elapsed)}</span>
+            <span className="font-mono text-[9px] text-bone/40">{fmt(displayMs)}</span>
           </div>
         </div>
 
         {/* time + equalizer */}
         <div className="hidden items-center gap-4 sm:flex">
           <span className="font-mono text-[11px] tabular-nums text-bone/50">
-            {fmt(elapsed)} <span className="text-bone/25">/ {fmt(track.len)}</span>
+            {fmt(displayMs)} <span className="text-bone/25">/ {dur ? fmt(dur) : '—:—'}</span>
           </span>
           <div className="flex h-7 items-end gap-[3px]" aria-hidden>
             {[0, 1, 2, 3, 4].map((i) => (
@@ -131,6 +258,17 @@ export function SerumRadio() {
         >
           <span className="hidden sm:inline">pełna </span>muzyka
         </Link>
+      </div>
+
+      {/* Real Spotify embed driving playback via the IFrame API. Kept ON-SCREEN
+          behind the bar (z-index/opacity hidden) — if parked off-screen its
+          loading="lazy" iframe never enters the viewport and never loads, so the
+          play button does nothing. On-screen + opacity 0 still plays audio. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden opacity-0"
+      >
+        <div ref={hostRef} />
       </div>
 
       <style>{`@keyframes eq { 0% { height: 4px } 100% { height: 26px } }`}</style>

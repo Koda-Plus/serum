@@ -1,41 +1,59 @@
+'use client'
+
 import Image from 'next/image'
-import { Splatter } from '@/components/brand/splatter'
+import { useRef } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { Eyebrow } from '@/components/ui/badge'
 
-const stats = [
-  ['2007', 'rok założenia'],
-  ['4', 'światy marki'],
-  ['∞', 'ścian w mieście'],
-  ['48H', 'wysyłka'],
-]
-
+/**
+ * Manifesto — a centered brand statement over a faint full-bleed mural, with the
+ * real heritage year "2007" as an oversized outline stamp behind the heading.
+ * No quote, no fake metrics — one centred lockup.
+ */
 export function Manifesto() {
+  const ref = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  const y = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
+
   return (
-    <section id="manifest" className="relative overflow-hidden bg-ink">
-      <Image src="/images/serum/mural-eros-chrome.jpg" alt="" fill aria-hidden className="object-cover opacity-20" sizes="100vw" />
-      <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/85 to-ink" />
-      <Splatter className="left-1/2 top-8 w-[380px] -translate-x-1/2" opacity={0.22} />
+    <section id="manifest" ref={ref} className="noise-overlay relative overflow-hidden bg-ink">
+      {/* faint mural backdrop */}
+      <motion.div style={{ y }} className="absolute inset-[-8%]">
+        <Image src="/images/serum/mural-eros-chrome.jpg" alt="" aria-hidden fill sizes="100vw" className="object-cover opacity-20" />
+      </motion.div>
+      <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/75 to-ink" />
 
-      <div className="relative mx-auto max-w-3xl px-4 py-20 text-center lg:py-28">
-        <div className="mb-4 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-acid">
-          <span className="h-2 w-2 bg-acid" /> manifest
+      <div className="relative mx-auto max-w-3xl px-4 py-28 text-center lg:py-36">
+        {/* heritage stamp behind the heading */}
+        <div
+          aria-hidden
+          className="text-graffiti text-stroke-acid pointer-events-none absolute inset-x-0 top-1/2 -translate-y-[60%] text-center leading-none text-[clamp(7rem,22vw,18rem)] opacity-[0.13]"
+        >
+          2007
         </div>
-        <h2 className="text-graffiti text-[clamp(2rem,6vw,4rem)] leading-[1.02] text-bone">
-          Marka, która <span className="text-acid">wyrosła ze ściany</span>
-        </h2>
-        <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-bone/75">
-          Serum Global zaczęło się od graffiti, od nocy z puszką i porannego podziwiania świeżego
-          piece&apos;a. Od 2007 roku zamieniamy ten język w ubrania, muzykę i sztukę. Nie sprzedajemy
-          trendu. Sprzedajemy kawałek miasta, który nosisz na sobie.
-        </p>
 
-        <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-          {stats.map(([n, l]) => (
-            <div key={l} className="border border-ink-300 bg-ink-100/70 px-3 py-5 backdrop-blur-sm">
-              <div className="text-graffiti text-4xl text-acid">{n}</div>
-              <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-bone/55">{l}</div>
-            </div>
-          ))}
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-15%' }}
+          transition={{ duration: 0.6, ease: [0.2, 0.8, 0.2, 1] }}
+          className="relative"
+        >
+          <div className="flex justify-center">
+            <Eyebrow className="mb-5">manifest · od 2007</Eyebrow>
+          </div>
+          <h2 className="text-graffiti mx-auto max-w-3xl pb-1 text-[clamp(2.2rem,6.5vw,5rem)] leading-[1.06] text-bone">
+            Marka, która <span className="text-acid text-glow-acid">wyrosła ze ściany</span>
+          </h2>
+          <p className="mx-auto mt-7 max-w-xl text-base leading-relaxed text-bone/75">
+            Serum Global zaczęło się od graffiti — od nocy z puszką i porannego podziwiania świeżego
+            piece&apos;a. Od 2007 roku zamieniamy ten język w ubrania, muzykę i sztukę. Nie sprzedajemy
+            trendu. Sprzedajemy kawałek miasta, który nosisz na sobie.
+          </p>
+          <div className="mt-8 flex items-center justify-center gap-2 font-mono text-[11px] uppercase tracking-[0.24em] text-bone/55">
+            z puszki na ścianę <span className="text-brush text-lg text-acid">→</span> ze ściany na merch
+          </div>
+        </motion.div>
       </div>
     </section>
   )

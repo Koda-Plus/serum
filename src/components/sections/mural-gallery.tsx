@@ -3,8 +3,11 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { AnimatePresence, motion } from 'framer-motion'
-import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react'
 import { murals } from '@/data/murals'
+import { IconButton } from '@/components/ui/button'
+
+const TAG_PL: Record<string, string> = { character: 'Charakter', piece: 'Piece' }
 
 export function MuralGallery() {
   const [open, setOpen] = useState<number | null>(null)
@@ -25,10 +28,16 @@ export function MuralGallery() {
             }`}
           >
             <Image src={m.src} alt={m.title} fill sizes="(max-width:768px) 50vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-100" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/10 to-transparent opacity-85 transition-opacity group-hover:opacity-100" />
+            {/* index + tag + zoom affordance */}
+            <div className="absolute inset-x-3 top-3 flex items-center justify-between">
+              <span className="text-graffiti text-stroke-acid text-2xl leading-none opacity-70">{String(i + 1).padStart(2, '0')}</span>
+              <span className="bg-ink/85 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.18em] text-toxic backdrop-blur-sm">{TAG_PL[m.tag] ?? m.tag}</span>
+            </div>
+            <Maximize2 size={16} className="absolute right-3 bottom-3 text-bone opacity-0 transition-opacity group-hover:opacity-100" />
             <div className="absolute bottom-0 left-0 p-3 text-left">
               <div className="text-graffiti text-base text-bone md:text-xl">{m.title}</div>
-              <div className="font-mono text-[9px] uppercase tracking-[0.2em] text-acid">{m.credit} / {m.year}</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-acid">{m.credit} · {m.year}</div>
             </div>
           </button>
         ))}
@@ -43,15 +52,15 @@ export function MuralGallery() {
             onClick={close}
             className="fixed inset-0 z-[80] flex items-center justify-center bg-ink/95 p-4 backdrop-blur-sm"
           >
-            <button type="button" onClick={close} aria-label="Zamknij" className="absolute right-4 top-4 z-10 border-2 border-bone p-2 text-bone transition hover:border-acid hover:text-acid">
+            <IconButton type="button" onClick={close} aria-label="Zamknij" variant="outline" className="absolute right-4 top-4 z-10">
               <X size={20} />
-            </button>
-            <button type="button" onClick={(e) => { e.stopPropagation(); prev() }} aria-label="Poprzedni" className="absolute left-3 z-10 border-2 border-bone/40 p-2 text-bone transition hover:border-acid hover:text-acid md:left-8">
+            </IconButton>
+            <IconButton type="button" onClick={(e) => { e.stopPropagation(); prev() }} aria-label="Poprzedni" variant="outline" className="absolute left-3 z-10 md:left-8">
               <ChevronLeft size={22} />
-            </button>
-            <button type="button" onClick={(e) => { e.stopPropagation(); next() }} aria-label="Następny" className="absolute right-3 z-10 border-2 border-bone/40 p-2 text-bone transition hover:border-acid hover:text-acid md:right-8">
+            </IconButton>
+            <IconButton type="button" onClick={(e) => { e.stopPropagation(); next() }} aria-label="Następny" variant="outline" className="absolute right-3 z-10 md:right-8">
               <ChevronRight size={22} />
-            </button>
+            </IconButton>
 
             <motion.figure
               key={open}

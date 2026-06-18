@@ -17,8 +17,9 @@
   --color-acid-dark: #21103f;
   --color-toxic: #9a7ee6;
 
-  /* gold, the piece outline + accents */
-  --color-gold: #f0b63a;
+  /* the single hard-shadow ink that every offset box-shadow uses (was an
+     inconsistent mix of #060706 and --color-ink scattered across the app) */
+  --color-shadow: #060706;
 
   /* mural pops */
   --color-violet: #9d7ce0;
@@ -54,6 +55,13 @@
   ::selection {
     background: var(--color-acid);
     color: var(--color-bone);
+  }
+
+  /* keyboard focus, consistent across every interactive element (the ad-hoc
+     buttons had none). Mouse users never see it; keyboard users always do. */
+  :focus-visible {
+    outline: 2px solid var(--color-toxic);
+    outline-offset: 2px;
   }
 
   /* violet scrollbar, WebKit */
@@ -116,10 +124,6 @@
     -webkit-text-stroke: 2px var(--color-acid);
     color: transparent;
   }
-  .text-stroke-gold {
-    -webkit-text-stroke: 2px var(--color-gold);
-    color: transparent;
-  }
   .text-stroke-ink {
     -webkit-text-stroke: 2px var(--color-ink);
     color: var(--color-bone);
@@ -137,8 +141,13 @@
     z-index: 10;
   }
 
-  /* primary CTA, gold (the piece outline color) */
-  .btn-spray {
+  /* ----------------------------------------------------------------------
+     BUTTON SYSTEM — one base + variants, all sharing the graffiti hard-shadow
+     language. Use the <Button>/<ButtonLink> components (src/components/ui).
+     Shadow depth + lift on hover, press into the wall on :active. Sizes are
+     applied as Tailwind padding/text utilities on top.
+     ---------------------------------------------------------------------- */
+  .btn {
     font-family: var(--font-body);
     font-weight: 700;
     letter-spacing: 0.05em;
@@ -148,48 +157,137 @@
     align-items: center;
     justify-content: center;
     gap: 0.55rem;
-    padding: 0.85rem 1.5rem;
-    background: var(--color-gold);
-    color: var(--color-ink);
+    border-radius: 0;
+    cursor: pointer;
     transition: all 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 4px 4px 0 var(--color-ink);
   }
-  .btn-spray:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--color-ink);
-    background: #ffd666;
-  }
-  .btn-spray:active {
-    transform: translate(2px, 2px);
-    box-shadow: 2px 2px 0 var(--color-ink);
+  .btn:disabled,
+  .btn[aria-disabled='true'] {
+    opacity: 0.4;
+    pointer-events: none;
+    box-shadow: none;
+    transform: none;
   }
 
-  /* violet outline ghost */
-  .btn-ghost {
+  /* violet outline ghost — the default secondary CTA */
+  .btn--ghost {
     background: transparent;
     border: 2px solid var(--color-acid);
     color: var(--color-toxic);
     box-shadow: 4px 4px 0 var(--color-acid-dark);
   }
-  .btn-ghost:hover {
+  .btn--ghost:hover {
     background: rgba(107, 70, 193, 0.16);
-    box-shadow: 6px 6px 0 var(--color-acid-dark);
     color: var(--color-bone);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-acid-dark);
+  }
+  .btn--ghost:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--color-acid-dark);
   }
 
-  .btn-bone {
+  /* solid violet — wayfinding / identity actions (nav, not purchase) */
+  .btn--violet {
+    background: var(--color-acid);
+    color: var(--color-bone);
+    box-shadow: 4px 4px 0 var(--color-shadow);
+  }
+  .btn--violet:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--color-shadow);
+    background: var(--color-acid-deep);
+  }
+  .btn--violet:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--color-shadow);
+  }
+
+  /* bone — light, high-contrast on dark sections */
+  .btn--bone {
     background: var(--color-bone);
     color: var(--color-ink);
     box-shadow: 4px 4px 0 var(--color-acid);
   }
-  .btn-bone:hover {
+  .btn--bone:hover {
     transform: translate(-2px, -2px);
     box-shadow: 6px 6px 0 var(--color-acid);
+  }
+  .btn--bone:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--color-acid);
+  }
+
+  /* outline — quiet, flat (toolbars/chrome); no hard shadow by design */
+  .btn--outline {
+    background: transparent;
+    border: 2px solid var(--color-bone);
+    color: var(--color-bone);
+  }
+  .btn--outline:hover {
+    border-color: var(--color-acid);
+    color: var(--color-acid);
+  }
+  /* quieter ink-bordered outline for dense chrome */
+  .btn--outline.btn--muted {
+    border-color: var(--color-ink-300);
+  }
+  /* destructive intent (e.g. "wyczyść koszyk") */
+  .btn--outline.btn--danger:hover {
+    border-color: var(--color-magenta);
+    color: var(--color-magenta);
+  }
+
+  /* icon-square — compact icon-only controls. Solid = real action, outline =
+     utility/nav. Pair with .btn + a size utility (h-10 w-10 / h-8 w-8). */
+  .btn--icon {
+    padding: 0;
+    box-shadow: 3px 3px 0 var(--color-shadow);
+  }
+  .btn--icon:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--color-shadow);
+  }
+  .btn--icon:active {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0 var(--color-shadow);
+  }
+  .btn--icon.btn--outline {
+    box-shadow: none;
+  }
+  .btn--icon.btn--outline:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* segmented toggle — persistent selected state (sizes, filters). Not a CTA. */
+  .chip-toggle {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--color-ink-300);
+    color: rgba(241, 240, 247, 0.7);
+    background: transparent;
+    transition: all 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .chip-toggle:hover {
+    border-color: var(--color-acid);
+    color: var(--color-bone);
+  }
+  .chip-toggle[aria-pressed='true'],
+  .chip-toggle.is-active {
+    background: var(--color-acid);
+    border-color: var(--color-acid);
+    color: var(--color-bone);
+    box-shadow: 2px 2px 0 var(--color-shadow);
   }
 
   /* hard-shadow card frame */
   .frame-ink {
-    box-shadow: 6px 6px 0 var(--color-ink);
+    box-shadow: 6px 6px 0 var(--color-shadow);
   }
 
   .slash-divider {
@@ -208,11 +306,8 @@
   .text-glow-acid {
     text-shadow: 0 0 28px rgba(123, 86, 200, 0.5), 0 6px 30px rgba(0, 0, 0, 0.65);
   }
-  .text-glow-gold {
-    text-shadow: 0 0 30px rgba(255, 198, 61, 0.45), 0 6px 30px rgba(0, 0, 0, 0.6);
-  }
 
-  /* sticker tag */
+  /* sticker tag — Permanent Marker scrawl tier (brand voice / hand-tag) */
   .tag-sticker {
     font-family: var(--font-tag);
     background: var(--color-acid);
@@ -220,7 +315,7 @@
     padding: 0.2rem 0.7rem;
     transform: rotate(-3deg);
     display: inline-block;
-    box-shadow: 2px 2px 0 var(--color-ink);
+    box-shadow: 2px 2px 0 var(--color-shadow);
   }
 
   .marquee-track {
@@ -250,6 +345,15 @@
   animation: spray-flicker 0.7s ease-in-out infinite;
 }
 
+/* neon-sign glow pulse, used on the hero EROIZM word */
+@keyframes glow-pulse {
+  0%, 100% { text-shadow: 0 0 20px rgba(123, 86, 200, 0.45), 0 6px 30px rgba(0, 0, 0, 0.6); }
+  50% { text-shadow: 0 0 44px rgba(154, 126, 230, 0.8), 0 0 14px rgba(154, 126, 230, 0.55), 0 6px 30px rgba(0, 0, 0, 0.6); }
+}
+.animate-glow-pulse {
+  animation: glow-pulse 2.6s ease-in-out infinite;
+}
+
 @keyframes float-slow {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
@@ -269,4 +373,17 @@
 }
 .animate-fade-up {
   animation: fade-up 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* respect users who ask for less motion — kill the looping decorative
+   animations and long transitions, keep the UI fully usable */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -7,6 +7,7 @@ import { mainNav } from '@/data/nav'
 import { SerumLogo } from '@/components/brand/logo'
 import { useCart } from '@/store/cart'
 import { cn } from '@/lib/utils'
+import { IconButton } from '@/components/ui/button'
 
 export function Header() {
   const [open, setOpen] = useState(false)
@@ -45,7 +46,7 @@ export function Header() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="text-graffiti group relative ml-1 inline-flex items-center gap-1.5 bg-acid px-3 py-2 text-sm text-bone shadow-[3px_3px_0_#060706] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-acid-deep hover:shadow-[4px_4px_0_#060706]"
+                  className="text-graffiti group relative ml-1 inline-flex items-center gap-1.5 bg-acid px-3 py-2 text-sm text-bone shadow-[3px_3px_0_var(--color-shadow)] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-acid-deep hover:shadow-[4px_4px_0_var(--color-shadow)]"
                 >
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-bone/60" />
@@ -66,13 +67,9 @@ export function Header() {
             )}
           </nav>
 
-          <button
-            type="button"
-            className="hidden rounded-sm border border-ink-300 p-2 text-bone transition-colors hover:border-acid hover:text-acid md:inline-flex"
-            aria-label="Szukaj"
-          >
+          <IconButton variant="muted" size="sm" aria-label="Szukaj" className="hidden md:inline-flex">
             <Search size={18} />
-          </button>
+          </IconButton>
           <button
             type="button"
             onClick={() => toggle(true)}
@@ -88,14 +85,15 @@ export function Header() {
               {mounted ? count : 0}
             </span>
           </button>
-          <button
-            type="button"
-            className="rounded-sm border border-ink-300 p-2 text-bone lg:hidden"
+          <IconButton
+            variant="muted"
+            size="sm"
             aria-label="Menu"
+            className="lg:hidden"
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X size={18} /> : <Menu size={18} />}
-          </button>
+          </IconButton>
         </div>
       </div>
       <div className="slash-divider" />

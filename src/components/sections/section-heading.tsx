@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { Eyebrow } from '@/components/ui/badge'
 
 export function SectionHeading({
   kicker,
@@ -26,13 +27,8 @@ export function SectionHeading({
       )}
     >
       <div>
-        {kicker && (
-          <div className="mb-2 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-acid">
-            <span className="h-2 w-2 bg-acid" />
-            {kicker}
-          </div>
-        )}
-        <h2 className="text-graffiti text-[clamp(2rem,5vw,3.4rem)] leading-[0.95] text-bone">{title}</h2>
+        {kicker && <Eyebrow className="mb-2">{kicker}</Eyebrow>}
+        <h2 className="text-graffiti text-[clamp(2rem,5vw,3.4rem)] leading-[1.02] text-bone">{title}</h2>
       </div>
       {href && (
         <Link
