@@ -95,13 +95,15 @@ export function Hero() {
 
           <span className="slash-divider mt-6 block h-[3px] w-16 sm:mt-8" aria-hidden />
 
-          {/* Ero's bar, straight off the track – in the Jankora Street handstyle */}
-          <figure className="mt-6 max-w-xl border-x-2 border-acid bg-ink/45 px-6 py-5 backdrop-blur-sm">
-            <blockquote className="text-handstyle leading-[1.2] text-bone">
-              <span className="block text-[clamp(1.6rem,5.2vw,2.5rem)]">
+          {/* Ero's bar, straight off the track – in the Jankora Street handstyle.
+              Wide plate so the couplet stays on exactly 2 lines on desktop
+              (wraps freely on mobile). */}
+          <figure className="mt-6 w-full max-w-4xl border-x-2 border-acid bg-ink/45 px-6 py-5 backdrop-blur-sm">
+            <blockquote className="text-handstyle leading-[1.18] text-bone">
+              <span className="block text-[clamp(1.35rem,3.6vw,1.95rem)] lg:whitespace-nowrap">
                 <span className="text-acid-light">„</span>mam nowe rzeczy, które ziomek musisz mieć
               </span>
-              <span className="block text-[clamp(1.6rem,5.2vw,2.5rem)]">
+              <span className="block text-[clamp(1.35rem,3.6vw,1.95rem)] lg:whitespace-nowrap">
                 Tekst, bit, scratch i <span className="underline-graffiti">bezprzypałowy merch</span>
                 <span className="text-acid-light">”</span>
               </span>
