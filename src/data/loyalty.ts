@@ -73,6 +73,22 @@ export function pointsForSpend(pln: number) {
   return Math.round(pln * POINTS_PER_PLN)
 }
 
+/** The user's current rank for a lifetime points balance, plus the next tier. */
+export function rankForPoints(pts: number): { current: Rank; next: Rank | null; index: number } {
+  let index = 0
+  ranks.forEach((r, i) => {
+    if (pts >= r.pts) index = i
+  })
+  return { current: ranks[index], next: ranks[index + 1] ?? null, index }
+}
+
+/** 0..1 fill from the current rank's threshold toward the next one. */
+export function progressToNext(pts: number): number {
+  const { current, next } = rankForPoints(pts)
+  if (!next) return 1
+  return Math.min(1, Math.max(0, (pts - current.pts) / (next.pts - current.pts)))
+}
+
 export const accentFill: Record<RankAccent, string> = {
   violet: 'bg-acid text-bone',
   mono: 'bg-bone text-ink',

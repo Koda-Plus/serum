@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ShoppingBag, Menu, X, Search } from 'lucide-react'
+import { ShoppingBag, Menu, X, Search, User } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { mainNav } from '@/data/nav'
 import { SerumLogo } from '@/components/brand/logo'
@@ -70,6 +70,13 @@ export function Header() {
           <IconButton variant="muted" size="sm" aria-label="Szukaj" className="hidden md:inline-flex">
             <Search size={18} />
           </IconButton>
+          <Link
+            href="/account"
+            aria-label="Moje konto"
+            className="btn btn--icon btn--outline btn--muted inline-flex h-8 w-8"
+          >
+            <User size={18} />
+          </Link>
           <button
             type="button"
             onClick={() => toggle(true)}
@@ -110,6 +117,13 @@ export function Header() {
                 {l.label}
               </Link>
             ))}
+            <Link
+              href="/account"
+              onClick={() => setOpen(false)}
+              className="font-semibold uppercase tracking-wide flex items-center gap-2 border-l-4 border-acid bg-ink px-4 py-3 text-sm text-bone"
+            >
+              <User size={15} /> Moje konto
+            </Link>
           </div>
         </div>
       )}

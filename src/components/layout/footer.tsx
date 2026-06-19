@@ -64,8 +64,9 @@ export function Footer() {
           <FooterCol
             title="Marka"
             links={[
+              ['Moje konto', '/account'],
+              ['Skład Serum', '/account'],
               ['O nas', '#manifest'],
-              ['Regulamin', '#'],
               ['Dostawa i płatność', '#'],
               ['Zwroty i reklamacje', '#'],
             ]}
