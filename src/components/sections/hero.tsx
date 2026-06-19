@@ -5,9 +5,9 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { DotLottieReact, type DotLottie } from '@lottiefiles/dotlottie-react'
-import { ArrowRight, SprayCan } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { ButtonLink } from '@/components/ui/button'
-import { Eyebrow, Sticker } from '@/components/ui/badge'
+import { Sticker } from '@/components/ui/badge'
 
 const slides = [
   { src: '/images/serum/mural-2.jpg', piece: '„SERUM” wildstyle', credit: 'Hersk × Tembe4' },
@@ -72,17 +72,14 @@ export function Hero() {
       </div>
 
       {/* content */}
-      <div className="relative mx-auto flex min-h-[82vh] max-w-[1340px] flex-col items-center justify-center px-4 py-24 text-center lg:px-8">
+      <div className="relative mx-auto flex min-h-[82vh] max-w-[1340px] flex-col items-center justify-center px-4 py-16 text-center sm:py-24 lg:px-8">
         <div className="flex w-full flex-col items-center animate-fade-up">
+          {/* EROIZM wordmark – the single hero lockup ("Eroizmu się nie nosi") */}
           <h1 className="text-graffiti flex flex-col items-center">
-            <span className="text-acid-light text-glow-acid text-[clamp(1.9rem,7.5vw,4.5rem)] leading-[1.05] mb-3">
-              NOSISZ
-            </span>
-            <span className="sr-only">EROIZM</span>
             <motion.span
               role="img"
               aria-label="EROIZM"
-              className="relative mt-3 block aspect-[2199/705] w-[clamp(17.5rem,80vw,50rem)]"
+              className="relative block aspect-[2199/705] w-[clamp(16rem,84vw,52rem)]"
               initial={{ opacity: 0 }}
               animate={{ opacity: lottieReady ? 1 : 0 }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
@@ -96,18 +93,20 @@ export function Hero() {
             </motion.span>
           </h1>
 
+          <span className="slash-divider mt-6 block h-[3px] w-16 sm:mt-8" aria-hidden />
+
           <div className="mt-6 max-w-xl border-x-2 border-acid bg-ink/45 px-5 py-3 backdrop-blur-sm">
-            <p className="text-[15px] leading-relaxed text-bone/80 md:text-base">
+            <p className="text-balance text-[15px] leading-relaxed text-bone/80 md:text-base">
               Marka Erosa od 2007 – ubrania, muzyka i graffiti w jednym języku.
-              Nie ciuch, tylko kawałek miasta, który nosisz na sobie.
+              Nie&nbsp;ciuch, tylko kawałek miasta, który nosisz na sobie.
             </p>
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <ButtonLink href="/sklep" variant="bone" size="lg">
+          <div className="mt-8 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:items-center">
+            <ButtonLink href="/sklep" variant="bone" size="lg" className="w-full justify-center sm:w-auto">
               Zobacz kolekcję <ArrowRight size={18} />
             </ButtonLink>
-            <ButtonLink href="/street" variant="ghost" size="lg">
+            <ButtonLink href="/street" variant="ghost" size="lg" className="w-full justify-center sm:w-auto">
               Street Gallery
             </ButtonLink>
           </div>

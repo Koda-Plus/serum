@@ -37,18 +37,45 @@ const PLATES: Plate[] = [
 ]
 
 export function StreetGalleryTeaser() {
+  // The plates are two distinct series, not one: murals that became wearable
+  // merch, and murals you take home as a signed print. Number + label each
+  // series on its own so "na merch" and "na ścianę" never read as duplicates.
+  const merchTotal = PLATES.filter((p) => p.garmentSlug).length
+  const printTotal = PLATES.length - merchTotal
+  let mc = 0
+  let pc = 0
+  const decorated = PLATES.map((plate, i) => {
+    const isMerch = Boolean(plate.garmentSlug)
+    const typeIndex = isMerch ? ++mc : ++pc
+    return { plate, globalIndex: i, isMerch, typeIndex, typeTotal: isMerch ? merchTotal : printTotal }
+  })
+
   return (
     <div className="relative bg-ink">
-      {PLATES.map((plate, i) => (
-        <Plate key={plate.src} plate={plate} index={i} total={PLATES.length} />
+      {decorated.map((d) => (
+        <Plate key={d.plate.src} {...d} />
       ))}
     </div>
   )
 }
 
-function Plate({ plate, index, total }: { plate: Plate; index: number; total: number }) {
+function Plate({
+  plate,
+  globalIndex,
+  isMerch,
+  typeIndex,
+  typeTotal,
+}: {
+  plate: Plate
+  globalIndex: number
+  isMerch: boolean
+  typeIndex: number
+  typeTotal: number
+}) {
   const mural = bySrc(plate.src)
-  const num = String(index + 1).padStart(2, '0')
+  const num = String(typeIndex).padStart(2, '0')
+  const total = String(typeTotal).padStart(2, '0')
+  const seriesLabel = isMerch ? 'Ze ściany na merch' : 'Ze ściany na ścianę'
   const garment = plate.garmentSlug ? productBySlug(plate.garmentSlug) : undefined
 
   return (
@@ -57,7 +84,7 @@ function Plate({ plate, index, total }: { plate: Plate; index: number; total: nu
       <div className="absolute inset-x-0 top-0 z-30 h-[3px] bg-gradient-to-r from-transparent via-acid to-transparent" />
 
       {/* full-bleed mural */}
-      <Image src={plate.src} alt={mural.title} fill priority={index === 0} sizes="100vw" className="object-cover" />
+      <Image src={plate.src} alt={mural.title} fill priority={globalIndex === 0} sizes="100vw" className="object-cover" />
       <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/40 to-ink/55" />
       <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/55 to-ink/20" />
       <div className="noise-overlay absolute inset-0" />
@@ -74,7 +101,7 @@ function Plate({ plate, index, total }: { plate: Plate; index: number; total: nu
       <div className="absolute inset-0 z-20 mx-auto max-w-[1340px] px-4 lg:px-8">
         {/* top label, pinned */}
         <div className="absolute inset-x-4 top-24 flex items-center justify-between lg:inset-x-8">
-          <Eyebrow over>Ze ściany na merch · plate {num}</Eyebrow>
+          <Eyebrow over>{seriesLabel} · {num}/{total}</Eyebrow>
           <Link
             href="/street"
             className="font-semibold uppercase tracking-wide hidden items-center gap-1.5 border-b-2 border-acid pb-1 text-sm text-bone transition-colors hover:text-acid-light sm:inline-flex"
@@ -104,7 +131,7 @@ function Plate({ plate, index, total }: { plate: Plate; index: number; total: nu
                 <span className="text-bone/55">autor <span className="ml-1 text-bone">{mural.credit}</span></span>
                 <span className="text-bone/55">rok <span className="ml-1 text-bone">{mural.year}</span></span>
                 <span className="text-bone/55">typ <span className="ml-1 text-bone">{TAG_PL[mural.tag] ?? mural.tag}</span></span>
-                <span className="text-acid-light">{num} / {String(total).padStart(2, '0')}</span>
+                <span className="text-acid-light">{num} / {total}</span>
               </div>
             </motion.div>
 

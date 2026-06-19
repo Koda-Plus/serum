@@ -4,37 +4,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Plus } from 'lucide-react'
-import { Product, Accent } from '@/data/products'
+import { Product } from '@/data/products'
 import { Badge, MetaChip, DiscountChip, PriceChip } from '@/components/ui/badge'
 import { formatPLN, cn } from '@/lib/utils'
 import { useCart } from '@/store/cart'
-
-// Gold has been removed from the palette – gold-accent products fall back to
-// chrome so nothing renders yellow.
-export const accentBg: Record<Accent, string> = {
-  acid: 'bg-acid text-bone',
-  blue: 'bg-blue text-ink',
-  violet: 'bg-violet text-ink',
-  magenta: 'bg-magenta text-bone',
-  gold: 'bg-chrome text-ink',
-  chrome: 'bg-chrome text-ink',
-}
-export const accentText: Record<Accent, string> = {
-  acid: 'group-hover:text-acid-light',
-  blue: 'group-hover:text-blue',
-  violet: 'group-hover:text-violet',
-  magenta: 'group-hover:text-magenta',
-  gold: 'group-hover:text-chrome',
-  chrome: 'group-hover:text-chrome',
-}
-export const accentRing: Record<Accent, string> = {
-  acid: 'group-hover:border-acid',
-  blue: 'group-hover:border-blue',
-  violet: 'group-hover:border-violet',
-  magenta: 'group-hover:border-magenta',
-  gold: 'group-hover:border-chrome',
-  chrome: 'group-hover:border-chrome',
-}
 
 export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
   const add = useCart((s) => s.add)
@@ -50,12 +23,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
       className="group relative flex h-full flex-col"
     >
       <Link href={`/produkt/${product.slug}`} className="flex flex-1 flex-col">
-        <div
-          className={cn(
-            'relative aspect-square overflow-hidden border-2 border-ink-300 bg-ink-100 transition-all duration-300',
-            accentRing[product.accent],
-          )}
-        >
+        <div className="relative aspect-square overflow-hidden border-2 border-ink-300 bg-ink-100 transition-all duration-300 group-hover:border-acid">
           <Image
             src={product.image}
             alt={product.name}

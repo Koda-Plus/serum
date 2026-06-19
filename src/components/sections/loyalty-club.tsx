@@ -86,7 +86,10 @@ function RankCard({ rank, step }: { rank: Rank; step: number }) {
   return (
     <div
       className={cn(
-        'group relative flex flex-col border-2 bg-ink/70 p-5 backdrop-blur-sm transition-all hover:-translate-y-1',
+        'group relative flex flex-col border-2 p-5 backdrop-blur-sm transition-all hover:-translate-y-1',
+        // BOMBER is the black-and-white sleeve: a near-black card with a hard
+        // shadow, the rest stay on the translucent ink panel.
+        rank.accent === 'mono' ? 'bg-[#050406] shadow-[6px_6px_0_var(--color-shadow)]' : 'bg-ink/70',
         accentBorder[rank.accent],
         rank.accent === 'bone' && 'shadow-[6px_6px_0_var(--color-shadow)]',
       )}

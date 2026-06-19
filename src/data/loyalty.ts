@@ -3,7 +3,9 @@
 // with realistic, believable perks. Thresholds tuned so a second hoodie reaches
 // BOMBER (free shipping forever) – building a wardrobe pays.
 
-export type RankAccent = 'violet' | 'blue' | 'chrome' | 'bone'
+// 'mono' = the black-and-white BOMBER treatment, after the b/w "NO.1 W PL"
+// album cover (was a stray blue that didn't belong in the violet palette).
+export type RankAccent = 'violet' | 'mono' | 'chrome' | 'bone'
 
 export interface Rank {
   key: string
@@ -36,7 +38,7 @@ export const ranks: Rank[] = [
     gate: '500 pkt',
     tagline: 'Robisz to regularnie.',
     perks: ['−10% na stałe', 'Darmowa wysyłka – zawsze', 'Dropy 24h przed wszystkimi'],
-    accent: 'blue',
+    accent: 'mono',
   },
   {
     key: 'rank-3',
@@ -73,19 +75,19 @@ export function pointsForSpend(pln: number) {
 
 export const accentFill: Record<RankAccent, string> = {
   violet: 'bg-acid text-bone',
-  blue: 'bg-blue text-ink',
+  mono: 'bg-bone text-ink',
   chrome: 'bg-chrome text-ink',
   bone: 'bg-bone text-ink',
 }
 export const accentText: Record<RankAccent, string> = {
   violet: 'text-acid-light',
-  blue: 'text-blue',
+  mono: 'text-bone',
   chrome: 'text-chrome',
   bone: 'text-bone',
 }
 export const accentBorder: Record<RankAccent, string> = {
   violet: 'border-acid',
-  blue: 'border-blue',
+  mono: 'border-bone/65',
   chrome: 'border-chrome',
   bone: 'border-bone',
 }
