@@ -1,7 +1,8 @@
 // "SKŁAD SERUM" – loyalty program (crew framing, no drug/veins connotations).
-// Points are collected per złoty spent; ranks follow a graffiti/crew progression
-// with realistic, believable perks. Thresholds tuned so a second hoodie reaches
-// BOMBER (free shipping forever) – building a wardrobe pays.
+// Points are earned per złoty spent at 1 zł = 10 pkt (a multiplier, so the
+// balance reads as a points score, not a literal "how much I've spent" total).
+// Rank thresholds are in points, tuned so ~500 zł reaches BOMBER (free shipping
+// forever) – building a wardrobe pays.
 
 // 'mono' = the black-and-white BOMBER treatment, after the b/w "NO.1 W PL"
 // album cover (was a stray blue that didn't belong in the violet palette).
@@ -34,8 +35,8 @@ export const ranks: Rank[] = [
   {
     key: 'bomber',
     name: 'Bomber',
-    pts: 500,
-    gate: '500 pkt',
+    pts: 5000,
+    gate: '5000 pkt',
     tagline: 'Robisz to regularnie.',
     perks: ['−10% na stałe', 'Darmowa wysyłka – zawsze', 'Dropy 24h przed wszystkimi'],
     accent: 'mono',
@@ -43,8 +44,8 @@ export const ranks: Rank[] = [
   {
     key: 'rank-3',
     name: 'X',
-    pts: 1500,
-    gate: '1500 pkt',
+    pts: 15000,
+    gate: '15 000 pkt',
     tagline: 'Jeszcze kombinujemy nazwę.',
     perks: [],
     accent: 'chrome',
@@ -53,8 +54,8 @@ export const ranks: Rank[] = [
   {
     key: 'rank-4',
     name: 'X',
-    pts: 3000,
-    gate: '3000 pkt',
+    pts: 30000,
+    gate: '30 000 pkt',
     tagline: 'Top ekipy – szykujemy coś grubego.',
     perks: [],
     accent: 'bone',
@@ -62,8 +63,9 @@ export const ranks: Rank[] = [
   },
 ]
 
-/** 1 zł spent = 1 point. Full set (bluza + spodnie + czapka) doubles it. */
-export const POINTS_PER_PLN = 1
+/** 1 zł spent = 10 points (multiplier so the balance isn't a literal PLN-spent
+ *  readout). Full set (bluza + spodnie + czapka) doubles it. */
+export const POINTS_PER_PLN = 10
 
 /** Free-shipping threshold (zł) – the most actionable in-cart milestone. */
 export const FREE_SHIPPING_PLN = 299

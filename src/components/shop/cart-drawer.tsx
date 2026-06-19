@@ -106,7 +106,11 @@ export function CartDrawer() {
 
             {items.length > 0 && (
               <div className="border-t border-ink-300 bg-ink-50 p-5">
-                <CartLoyaltyNudge total={total()} onClose={() => toggle(false)} />
+                <CartLoyaltyNudge
+                  total={total()}
+                  count={items.reduce((n, i) => n + i.quantity, 0)}
+                  onClose={() => toggle(false)}
+                />
                 <div className="mb-3 flex items-baseline justify-between">
                   <span className="font-mono text-xs uppercase tracking-[0.3em] text-bone/60">razem</span>
                   <span className="text-graffiti text-3xl text-acid-light">{formatPLN(total())}</span>
@@ -129,13 +133,16 @@ export function CartDrawer() {
   )
 }
 
-/** The "buy one more" mechanic: free-shipping progress + ML earned toward the
- *  Serum w Żyłach club. Makes the upside of a bigger basket visible at checkout. */
-function CartLoyaltyNudge({ total, onClose }: { total: number; onClose: () => void }) {
+/** The "buy one more" mechanic: free-shipping progress + points earned toward the
+ *  Skład Serum club. Copy adapts to the cart: below/above the free-shipping
+ *  threshold, and one piece vs a fuller basket (so it never hardcodes "po jednej"
+ *  when you already have several). */
+function CartLoyaltyNudge({ total, count, onClose }: { total: number; count: number; onClose: () => void }) {
   const remaining = Math.max(0, FREE_SHIPPING_PLN - total)
   const pct = Math.min(100, (total / FREE_SHIPPING_PLN) * 100)
   const pts = pointsForSpend(total)
   const free = remaining <= 0
+  const solo = count <= 1
 
   return (
     <a
@@ -145,18 +152,30 @@ function CartLoyaltyNudge({ total, onClose }: { total: number; onClose: () => vo
     >
       <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em]">
         <span className="text-acid-light">Skład Serum</span>
-        <span className="text-bone/55">ten zakup = +{pts} pkt</span>
+        <span className="text-bone/55">ten zakup = +{pts.toLocaleString('pl-PL')} pkt</span>
       </div>
       <p className="mt-2 text-[12px] leading-snug text-bone/75">
         {free ? (
-          <>
-            <span className="text-acid-light">Darmowa wysyłka odblokowana.</span> Dobierz drugą sztukę –{' '}
-            <span className="text-bone">nie zawijaj się po jednej</span>, każda to punkty w składzie.
-          </>
-        ) : (
+          solo ? (
+            <>
+              <span className="text-acid-light">Darmowa wysyłka odblokowana.</span> Nie zawijaj się po jednej –
+              dorzuć drugą sztukę, każda to punkty w składzie.
+            </>
+          ) : (
+            <>
+              <span className="text-acid-light">Masz darmową wysyłkę.</span> Cały skład gotowy – każda kolejna
+              sztuka to dodatkowe punkty na koncie.
+            </>
+          )
+        ) : solo ? (
           <>
             Dobierz za <span className="text-bone">{formatPLN(remaining)}</span> i łapiesz{' '}
             <span className="text-acid-light">darmową wysyłkę</span> – nie zawijaj się po jednej.
+          </>
+        ) : (
+          <>
+            Jeszcze <span className="text-bone">{formatPLN(remaining)}</span> i cały skład jedzie z{' '}
+            <span className="text-acid-light">darmową wysyłką</span>.
           </>
         )}
       </p>

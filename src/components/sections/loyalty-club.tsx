@@ -21,7 +21,7 @@ export function LoyaltyClub() {
             Skład <span className="text-acid-light text-glow-acid">Serum</span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-bone/70">
-            Każdy zakup zgarnia punkty. 1 zł = <span className="text-acid-light">1 punkt</span> na koncie –
+            Każdy zakup zgarnia punkty. 1 zł = <span className="text-acid-light">10 pkt</span> na koncie –
             zbierasz, wbijasz w rangi i odblokowujesz rabaty, które zostają z Tobą na stałe.
             Im więcej nosisz, tym wyżej w ekipie.
           </p>
@@ -31,7 +31,7 @@ export function LoyaltyClub() {
         <div className="mx-auto mt-10 grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3">
           {[
             ['01', 'Kupujesz', 'Bluza, płyta, czapka – co weźmiesz, to punkty.'],
-            ['02', 'Zbierasz punkty', '1 zł = 1 pkt. Pełny set = podwójne punkty.'],
+            ['02', 'Zbierasz punkty', '1 zł = 10 pkt. Pełny set = podwójne punkty.'],
             ['03', 'Wbijasz wyżej', 'Wyższa ranga = większy rabat na zawsze.'],
           ].map(([n, t, d]) => (
             <div key={n} className="border border-ink-300 bg-ink/60 p-4 backdrop-blur-sm">

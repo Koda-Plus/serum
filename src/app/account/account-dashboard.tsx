@@ -38,7 +38,7 @@ const USER = {
   email: 'kuba.w@example.com',
   city: 'Warszawa',
   memberSince: 2023,
-  points: 975, // 1 zł = 1 pkt → matches lifetime order totals below
+  points: 9750, // 1 zł = 10 pkt (gamified balance, not a literal PLN-spent readout)
   referralCode: 'KUBA-SERUM',
 }
 
@@ -115,7 +115,7 @@ export function AccountDashboard() {
       <div className="mx-auto max-w-[1340px] space-y-12 px-4 py-12 lg:px-8 lg:py-16">
         {/* stat row */}
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-          <Stat label="Punkty" value={USER.points.toLocaleString('pl-PL')} sub="1 zł = 1 punkt" />
+          <Stat label="Punkty" value={USER.points.toLocaleString('pl-PL')} sub="1 zł = 10 pkt" />
           <Stat label="Ranga" value={current.name} sub="Skład Serum" accent />
           <Stat label="Zaoszczędzone" value={`${savedTotal} zł`} sub="dzięki rabatom" />
           <Stat label="Zamówienia" value={orders.length} sub={`od ${USER.memberSince}`} />
