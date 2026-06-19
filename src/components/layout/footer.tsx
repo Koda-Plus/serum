@@ -67,7 +67,7 @@ export function Footer() {
             links={[
               ['Moje konto', '/account'],
               ['Skład Serum', '/account'],
-              ['O nas', '#manifest'],
+              ['Street Gallery', '/street'],
               ['Dostawa i płatność', '#'],
               ['Zwroty i reklamacje', '#'],
             ]}

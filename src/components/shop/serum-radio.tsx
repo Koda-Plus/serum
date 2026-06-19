@@ -22,6 +22,9 @@ const TRACK = {
 
 type SpotifyController = {
   togglePlay: () => void
+  play?: () => void
+  resume?: () => void
+  pause?: () => void
   seek: (seconds: number) => void
   addListener: (event: string, cb: (e: { data: PlaybackData }) => void) => void
 }
@@ -113,21 +116,44 @@ export function SerumRadio() {
     return () => clearInterval(id)
   }, [playing, dur])
 
-  const toggle = useCallback(() => controllerRef.current?.togglePlay(), [])
-  const nudge = useCallback(
-    (delta: number) => controllerRef.current?.seek(Math.max(0, displayMs / 1000 + delta)),
-    [displayMs],
+  // Seek + optimistically move the UI right away. Spotify only reports position
+  // while playing, so without this the bar wouldn't budge when paused and the
+  // ±15s buttons "felt" dead.
+  const seekTo = useCallback(
+    (secs: number) => {
+      const c = controllerRef.current
+      if (!c) return
+      const maxSecs = dur > 0 ? dur / 1000 : Infinity
+      const clamped = Math.max(0, Math.min(secs, maxSecs))
+      c.seek(clamped)
+      posRef.current = clamped * 1000
+      updatedRef.current = Date.now()
+      setDisplayMs(clamped * 1000)
+    },
+    [dur],
   )
+
+  // Play/pause that also handles the end of the track: once it has finished,
+  // togglePlay alone won't restart it, so we rewind to 0 and resume.
+  const toggle = useCallback(() => {
+    const c = controllerRef.current
+    if (!c) return
+    const atEnd = dur > 0 && displayMs >= dur - 800
+    if (atEnd && !playing) {
+      seekTo(0)
+      ;(c.play ?? c.resume ?? c.togglePlay)()
+      return
+    }
+    c.togglePlay()
+  }, [dur, displayMs, playing, seekTo])
+
+  const nudge = useCallback((delta: number) => seekTo(displayMs / 1000 + delta), [displayMs, seekTo])
   const seekToFraction = useCallback(
     (f: number) => {
       if (dur <= 0) return
-      const secs = Math.max(0, Math.min(1, f)) * (dur / 1000)
-      controllerRef.current?.seek(secs)
-      posRef.current = secs * 1000
-      updatedRef.current = Date.now()
-      setDisplayMs(secs * 1000)
+      seekTo(Math.max(0, Math.min(1, f)) * (dur / 1000))
     },
-    [dur],
+    [dur, seekTo],
   )
 
   const pct = dur > 0 ? Math.min(100, (displayMs / dur) * 100) : 0
