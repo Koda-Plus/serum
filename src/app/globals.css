@@ -366,6 +366,12 @@
   animation: fade-up 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
+/* hero lyric "now playing" equalizer bars */
+@keyframes eq {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
 /* respect users who ask for less motion – kill the looping decorative
    animations and long transitions, keep the UI fully usable */
 @media (prefers-reduced-motion: reduce) {

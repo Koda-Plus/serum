@@ -95,12 +95,23 @@ export function Hero() {
 
           <span className="slash-divider mt-6 block h-[3px] w-16 sm:mt-8" aria-hidden />
 
-          <div className="mt-6 max-w-xl border-x-2 border-acid bg-ink/45 px-5 py-3 backdrop-blur-sm">
-            <p className="text-balance text-[15px] leading-relaxed text-bone/80 md:text-base">
-              Marka Erosa od 2007 – ubrania, muzyka i graffiti w jednym języku.
-              Nie&nbsp;ciuch, tylko kawałek miasta, który nosisz na sobie.
-            </p>
-          </div>
+          {/* Ero's bar, straight off the track – "now playing" lyric plate */}
+          <figure className="mt-6 max-w-xl border-x-2 border-acid bg-ink/45 px-5 py-4 backdrop-blur-sm">
+            <figcaption className="mb-3 flex items-center justify-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.26em] text-acid-light">
+              <Equalizer />
+              Ero · prosto z nutki
+            </figcaption>
+            <blockquote className="text-brush font-bold leading-[1.16] text-bone">
+              <span className="block text-[clamp(1.4rem,4.8vw,2.1rem)]">
+                <span className="text-acid-light">„</span>mam nowe rzeczy, które ziomek musisz mieć
+              </span>
+              <span className="block text-[clamp(1.4rem,4.8vw,2.1rem)]">
+                Tekst, bit, scratch i{' '}
+                <span className="bg-acid px-1.5 text-bone [box-decoration-break:clone]">bezprzypałowy merch</span>
+                <span className="text-acid-light">”</span>
+              </span>
+            </blockquote>
+          </figure>
 
           <div className="mt-8 flex w-full max-w-md flex-col items-stretch justify-center gap-3 sm:w-auto sm:max-w-none sm:flex-row sm:items-center">
             <ButtonLink href="/sklep" variant="bone" size="lg" className="w-full justify-center sm:w-auto">
@@ -143,5 +154,22 @@ export function Hero() {
         </div>
       </div>
     </section>
+  )
+}
+
+/** "now playing" equalizer – 5 bars bouncing out of phase, signals the lyric is
+ *  pulled straight off the track. Stilled automatically under reduced-motion. */
+function Equalizer() {
+  const delays = ['0s', '0.18s', '0.36s', '0.1s', '0.28s']
+  return (
+    <span className="inline-flex h-3.5 items-end gap-[2.5px]" aria-hidden>
+      {delays.map((d, i) => (
+        <span
+          key={i}
+          className="block h-full w-[3px] origin-bottom bg-acid-light"
+          style={{ animation: 'eq 0.9s ease-in-out infinite', animationDelay: d }}
+        />
+      ))}
+    </span>
   )
 }
