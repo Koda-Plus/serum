@@ -17,7 +17,7 @@ export function ShopContent() {
   const params = useSearchParams()
   const [filter, setFilter] = useState('all')
   const [sort, setSort] = useState<Sort>('new')
-  const collection = params.get('kolekcja') // e.g. "eros-one" — a named drop, not a category
+  const collection = params.get('kolekcja') // e.g. "eros-one" – a named drop, not a category
 
   useEffect(() => {
     const kat = params.get('kat')
@@ -47,10 +47,10 @@ export function ShopContent() {
             <>
               <Eyebrow className="mb-2">Kolekcja · drop ’26</Eyebrow>
               <h1 className="text-graffiti text-[clamp(2.4rem,7vw,5rem)] leading-[0.9] text-bone">
-                Eros One <span className="text-acid text-glow-acid">’26</span>
+                Eros One <span className="text-acid-light text-glow-acid">’26</span>
               </h1>
               <p className="mt-3 max-w-xl text-sm leading-relaxed text-bone/65">
-                Najnowszy drop Serum Global — bluzy, t-shirty i szorty z autorskimi nadrukami.
+                Najnowszy drop Serum Global – bluzy, t-shirty i szorty z autorskimi nadrukami.
                 Cała kolekcja w jednym miejscu.
               </p>
             </>

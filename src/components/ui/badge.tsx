@@ -40,7 +40,7 @@ export function Badge({ label, className }: { label: BadgeLabel; className?: str
 
 /* --------------------------------------------------------------- data chips */
 
-/** Quiet glass meta chip — category, breadcrumb tail, captions. Never coloured. */
+/** Quiet glass meta chip – category, breadcrumb tail, captions. Never coloured. */
 export function MetaChip({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <span
@@ -63,7 +63,7 @@ export function DiscountChip({ pct, className }: { pct: number; className?: stri
   )
 }
 
-/** Headline price token — always signature violet, for one consistent price
+/** Headline price token – always signature violet, for one consistent price
  *  colour across every product (no per-accent variation). */
 export function PriceChip({
   children,
@@ -80,7 +80,7 @@ export function PriceChip({
         'text-graffiti inline-flex items-center bg-acid text-bone',
         size === 'pdp'
           ? 'px-3 py-1.5 text-2xl shadow-[3px_3px_0_var(--color-shadow)]'
-          : 'gap-1.5 px-2.5 py-1 text-sm shadow-[2px_2px_0_var(--color-shadow)]',
+          : 'gap-1.5 px-2.5 py-1 text-base shadow-[2px_2px_0_var(--color-shadow)]',
         className,
       )}
     >
@@ -107,18 +107,18 @@ export function Eyebrow({
   return (
     <div
       className={cn(
-        'inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-acid',
-        over && 'border border-acid/40 bg-ink/60 px-3 py-1.5 backdrop-blur-sm',
+        'inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.28em] text-acid-light',
+        over && 'border border-toxic/40 bg-ink/60 px-3 py-1.5 backdrop-blur-sm',
         className,
       )}
     >
-      {icon ?? <span className="h-2 w-2 bg-acid" aria-hidden />}
+      {icon ?? <span className="h-1.5 w-1.5 bg-acid rounded-full" aria-hidden />}
       {children}
     </div>
   )
 }
 
-/** Object tier — a physical announcement card that casts a 6px shadow. */
+/** Object tier – a physical announcement card that casts a 6px shadow. */
 export function Sticker({
   children,
   tone = 'bone',
@@ -141,7 +141,7 @@ export function Sticker({
   )
 }
 
-/** Scrawl/voice tier — Permanent Marker hand-tag. Where brand voice lives. */
+/** Scrawl/voice tier – Permanent Marker hand-tag. Where brand voice lives. */
 export function TagSticker({
   children,
   tone = 'acid',
@@ -166,7 +166,7 @@ export function TagSticker({
 }
 
 /**
- * "Bezprzypałowy merch" — Ero's brand-voice quality stamp. A designed hip-hop
+ * "Bezprzypałowy merch" – Ero's brand-voice quality stamp. A designed hip-hop
  * emblem (slap-sticker energy) rather than a dry tag: spray-can mark + Permanent
  * Marker headline + a mono certification sub-line, with starbursts.
  */
@@ -178,18 +178,18 @@ export function BezBadge({ className }: { className?: string }) {
         className,
       )}
     >
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-acid bg-acid/15 text-acid">
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-acid bg-acid/15 text-acid-light">
         <SprayCan size={18} />
       </span>
       <span className="leading-none">
-        <span className="mb-1 flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-toxic">
+        <span className="mb-1 flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-acid-light">
           100% serum quality <BadgeCheck size={11} />
         </span>
         <span className="text-tag block whitespace-nowrap text-xl text-bone">bezprzypałowy merch</span>
       </span>
       {/* corner starbursts */}
-      <span className="absolute -right-2.5 -top-2.5 text-acid">✦</span>
-      <span className="absolute -bottom-2 -left-1.5 text-[10px] text-toxic">✦</span>
+      <span className="absolute -right-2.5 -top-2.5 text-acid-light">✦</span>
+      <span className="absolute -bottom-2 -left-1.5 text-[10px] text-acid-light">✦</span>
     </div>
   )
 }

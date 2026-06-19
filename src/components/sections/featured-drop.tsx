@@ -11,7 +11,7 @@ import { formatPLN } from '@/lib/utils'
 import { useCart } from '@/store/cart'
 
 /**
- * SERUM × TEMPZ — a full-bleed Szczur mural ("na pełną pizdę"), with the collab
+ * SERUM × TEMPZ – a full-bleed Szczur mural ("na pełną pizdę"), with the collab
  * hoodies advertised right on the wall as a glass spec-rail. The mural is the
  * hero; the products are the payoff stuck onto it.
  */
@@ -40,10 +40,10 @@ export function FeaturedDrop() {
             <TagSticker tone="acid" className="whitespace-nowrap text-sm">prosto ze ściany</TagSticker>
           </div>
           <h2 className="text-graffiti text-[clamp(3rem,11vw,7.5rem)] leading-[0.82] text-bone">
-            SERUM <span className="text-acid text-glow-acid">×</span> TEMPZ
+            SERUM <span className="text-acid-light text-glow-acid">×</span> TEMPZ
           </h2>
           <p className="mt-5 max-w-md text-sm leading-relaxed text-bone/80 md:text-base">
-            Szczur i Gołąb ze ścian Tembe4 × Hersk — przeniesione prosto z muralu na ciężką bawełnę.
+            Szczur i Gołąb ze ścian Tembe4 × Hersk – przeniesione prosto z muralu na ciężką bawełnę.
             Limitowana kapsuła.
           </p>
           <ButtonLink href="/sklep?kat=bluzy" variant="violet" size="lg" className="mt-7">
@@ -83,7 +83,7 @@ function CollabRow({ product }: { product: Product }) {
           <Image src={product.image} alt={product.name} fill sizes="64px" className="object-cover" />
         </div>
         <div className="min-w-0 flex-1">
-          <div className="text-graffiti truncate text-sm leading-tight text-bone transition-colors group-hover:text-toxic">
+          <div className="text-graffiti truncate text-sm leading-tight text-bone transition-colors group-hover:text-acid-light">
             {product.name.replace(/^Bluza Serum x Tempz - /i, '')}
           </div>
           <PriceChip className="mt-1.5">{formatPLN(product.price)}</PriceChip>

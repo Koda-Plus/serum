@@ -19,7 +19,7 @@ const groups: { key: string; label: string }[] = [
   { key: 'album', label: 'Inne' },
 ]
 
-const artistOf = (name: string) => name.split(/[-–—]/)[0].trim()
+const artistOf = (name: string) => name.split(/[-––]/)[0].trim()
 
 export default function MusicPage() {
   const all = productsByPillar('muzyka')
@@ -27,16 +27,16 @@ export default function MusicPage() {
 
   return (
     <div>
-      {/* editorial hero — featured release pulled off the shelf */}
+      {/* editorial hero – featured release pulled off the shelf */}
       <header className="noise-overlay relative overflow-hidden border-b border-ink-300 bg-ink-50">
         <div className="relative mx-auto grid max-w-[1340px] grid-cols-1 items-center gap-10 px-4 py-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:px-8 lg:py-20">
           <div>
             <Eyebrow icon={<Disc3 size={14} />} className="mb-3">winyl · cd · kaseta</Eyebrow>
             <h1 className="text-graffiti text-[clamp(2.6rem,8vw,5.5rem)] leading-[0.88] text-bone">
-              Muzyka <span className="text-acid text-glow-acid">z półki</span>
+              Muzyka <span className="text-acid-light text-glow-acid">z półki</span>
             </h1>
             <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-bone/70">
-              Rap, który gra w tle każdej ściany. Wydania z katalogu Serum i zaprzyjaźnionych ekip —
+              Rap, który gra w tle każdej ściany. Wydania z katalogu Serum i zaprzyjaźnionych ekip –
               Ero, JWP/BC, WENA, Włodi i inni. Format fizyczny, dla kolekcjonerów.
             </p>
             {featured && (

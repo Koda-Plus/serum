@@ -35,9 +35,9 @@ export function ProductDetail({ product, related }: { product: Product; related:
     <div className="mx-auto max-w-[1340px] px-4 py-8 lg:px-8 lg:py-12">
       {/* breadcrumb */}
       <nav className="mb-6 flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-bone/45">
-        <Link href="/" className="hover:text-acid">Start</Link>
+        <Link href="/" className="hover:text-acid-light">Start</Link>
         <ChevronRight size={12} />
-        <Link href={pillarHref} className="hover:text-acid">{pillarLabel}</Link>
+        <Link href={pillarHref} className="hover:text-acid-light">{pillarLabel}</Link>
         <ChevronRight size={12} />
         <span className="text-bone/70">{product.categoryLabel}</span>
       </nav>
@@ -82,7 +82,7 @@ export function ProductDetail({ product, related }: { product: Product; related:
 
         {/* info */}
         <div className="flex flex-col">
-          <div className="font-mono text-[11px] uppercase tracking-[0.28em] text-acid">{product.categoryLabel}</div>
+          <div className="font-mono text-[11px] uppercase tracking-[0.28em] text-acid-light">{product.categoryLabel}</div>
           <h1 className="text-graffiti mt-2 text-[clamp(1.9rem,4.5vw,3.2rem)] leading-[0.95] text-bone">{product.name}</h1>
 
           <div className="mt-5 flex items-end gap-3">
@@ -131,7 +131,7 @@ export function ProductDetail({ product, related }: { product: Product; related:
             </Button>
           </div>
 
-          {/* brand voice — Ero's own words, designed as a quality stamp */}
+          {/* brand voice – Ero's own words, designed as a quality stamp */}
           <div className="mt-7">
             <BezBadge />
           </div>
@@ -145,7 +145,7 @@ export function ProductDetail({ product, related }: { product: Product; related:
 
           <div className="mt-6 font-mono text-[10px] uppercase tracking-[0.18em] text-bone/35">
             {product.inStock ? 'Dostępny, wysyłka od ręki' : 'Chwilowo niedostępny'} /{' '}
-            <a href={product.sourceUrl} target="_blank" rel="noreferrer" className="hover:text-acid">
+            <a href={product.sourceUrl} target="_blank" rel="noreferrer" className="hover:text-acid-light">
               serumsklep.pl ↗
             </a>
           </div>
@@ -156,7 +156,7 @@ export function ProductDetail({ product, related }: { product: Product; related:
       {related.length > 0 && (
         <div className="mt-20">
           <h2 className="text-graffiti mb-8 text-2xl text-bone md:text-3xl">
-            Zobacz też<span className="text-acid">.</span>
+            Zobacz też<span className="text-acid-light">.</span>
           </h2>
           <div className="grid grid-cols-2 gap-x-4 gap-y-9 sm:grid-cols-3 lg:grid-cols-4">
             {related.map((p, i) => (
@@ -172,7 +172,7 @@ export function ProductDetail({ product, related }: { product: Product; related:
 function Trust({ icon, title, sub }: { icon: React.ReactNode; title: string; sub: string }) {
   return (
     <div className="flex items-start gap-2.5">
-      <span className="mt-0.5 text-acid">{icon}</span>
+      <span className="mt-0.5 text-acid-light">{icon}</span>
       <div>
         <div className="text-graffiti text-sm text-bone">{title}</div>
         <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-bone/45">{sub}</div>

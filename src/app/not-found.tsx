@@ -10,7 +10,7 @@ export default function NotFound() {
       <div className="relative mx-auto max-w-2xl px-6 text-center">
         <Eyebrow className="mb-3 justify-center">404</Eyebrow>
         <h1 className="text-graffiti text-[clamp(4rem,18vw,11rem)] leading-[0.85] text-bone text-glow-acid">
-          NIE<span className="text-acid"> MA</span>
+          NIE<span className="text-acid-light"> MA</span>
         </h1>
         <p className="mx-auto mt-5 max-w-md text-base text-bone/70">
           Tej ściany tu nie ma. Wróć na start, sprawdź najnowszą kolekcję albo wpadnij do Street Gallery.

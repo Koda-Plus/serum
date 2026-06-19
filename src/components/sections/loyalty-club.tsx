@@ -5,7 +5,7 @@ import { Eyebrow } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
 /**
- * "SKŁAD SERUM" — the loyalty club (crew framing). Points per złoty spent, ranks
+ * "SKŁAD SERUM" – the loyalty club (crew framing). Points per złoty spent, ranks
  * follow a graffiti/crew progression. The point: make the upside of buying a
  * second/third piece visible and aspirational. See src/data/loyalty.ts.
  */
@@ -18,10 +18,10 @@ export function LoyaltyClub() {
         <div className="mx-auto max-w-2xl text-center">
           <Eyebrow className="mb-3 justify-center">Program ekipy · od 2007</Eyebrow>
           <h2 className="text-graffiti text-[clamp(2.4rem,7vw,5.2rem)] leading-[0.88] text-bone">
-            Skład <span className="text-acid text-glow-acid">Serum</span>
+            Skład <span className="text-acid-light text-glow-acid">Serum</span>
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-bone/70">
-            Każdy zakup zgarnia punkty. 1 zł = <span className="text-toxic">1 punkt</span> na koncie —
+            Każdy zakup zgarnia punkty. 1 zł = <span className="text-acid-light">1 punkt</span> na koncie –
             zbierasz, wbijasz w rangi i odblokowujesz rabaty, które zostają z Tobą na stałe.
             Im więcej nosisz, tym wyżej w ekipie.
           </p>
@@ -30,7 +30,7 @@ export function LoyaltyClub() {
         {/* how it works */}
         <div className="mx-auto mt-10 grid max-w-3xl grid-cols-1 gap-3 sm:grid-cols-3">
           {[
-            ['01', 'Kupujesz', 'Bluza, płyta, czapka — co weźmiesz, to punkty.'],
+            ['01', 'Kupujesz', 'Bluza, płyta, czapka – co weźmiesz, to punkty.'],
             ['02', 'Zbierasz punkty', '1 zł = 1 pkt. Pełny set = podwójne punkty.'],
             ['03', 'Wbijasz wyżej', 'Wyższa ranga = większy rabat na zawsze.'],
           ].map(([n, t, d]) => (
@@ -52,7 +52,7 @@ export function LoyaltyClub() {
         {/* CTA band */}
         <div className="mt-12 flex flex-col items-center justify-between gap-5 border-2 border-acid/40 bg-ink/60 px-6 py-7 backdrop-blur-sm md:flex-row lg:px-10">
           <div className="flex items-center gap-4">
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center border-2 border-acid bg-ink text-acid">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center border-2 border-acid bg-ink text-acid-light">
               <SprayCan size={22} />
             </span>
             <div>
@@ -74,7 +74,7 @@ export function LoyaltyClub() {
 function RankCard({ rank, step }: { rank: Rank; step: number }) {
   const total = 4
 
-  // placeholder rank — name/benefits not decided yet: just a big "X"
+  // placeholder rank – name/benefits not decided yet: just a big "X"
   if (rank.tbd) {
     return (
       <div className="flex min-h-[220px] items-center justify-center border-2 border-dashed border-ink-400 bg-ink/40 backdrop-blur-sm">
@@ -91,7 +91,7 @@ function RankCard({ rank, step }: { rank: Rank; step: number }) {
         rank.accent === 'bone' && 'shadow-[6px_6px_0_var(--color-shadow)]',
       )}
     >
-      {/* rising rank meter — each tier a bit fuller, so the climb reads visually */}
+      {/* rising rank meter – each tier a bit fuller, so the climb reads visually */}
       <div className="absolute right-0 top-0 h-full w-1 bg-ink-200">
         <div
           className={cn('absolute bottom-0 left-0 w-full', accentText[rank.accent])}

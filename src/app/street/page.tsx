@@ -33,10 +33,10 @@ export default function StreetPage() {
         <div className="relative mx-auto flex min-h-[68svh] max-w-[1340px] flex-col justify-end px-4 pb-10 pt-28 lg:px-8">
           <Eyebrow over className="mb-4 w-fit">galeria · od 2007</Eyebrow>
           <h1 className="text-graffiti text-[clamp(3rem,11vw,8rem)] leading-[0.84] text-bone">
-            STREET <span className="text-acid text-glow-acid">GALLERY</span>
+            STREET <span className="text-acid-light text-glow-acid">GALLERY</span>
           </h1>
           <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-bone/75">
-            Tu zaczyna się Serum. Murale, charaktery i wildstyle malowane przez Erosa i ekipę —
+            Tu zaczyna się Serum. Murale, charaktery i wildstyle malowane przez Erosa i ekipę –
             archiwum miasta, z którego wyrosła cała marka.
           </p>
 
@@ -44,13 +44,13 @@ export default function StreetPage() {
           <div className="mt-8 flex flex-wrap items-stretch gap-x-10 gap-y-4 border-t border-bone/15 pt-6">
             {meta.map(([n, l]) => (
               <div key={l}>
-                <div className="text-graffiti text-3xl leading-none text-acid">{n}</div>
+                <div className="text-graffiti text-3xl leading-none text-acid-light">{n}</div>
                 <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-bone/55">{l}</div>
               </div>
             ))}
             <Link
               href="#printy"
-              className="text-graffiti ml-auto hidden items-center gap-2 self-end border-b-2 border-acid pb-1 text-sm text-bone transition-colors hover:text-acid sm:inline-flex"
+              className="font-semibold uppercase tracking-wide ml-auto hidden items-center gap-2 self-end border-b-2 border-acid pb-1 text-sm text-bone transition-colors hover:text-acid-light sm:inline-flex"
             >
               przewiń do printów <ArrowDown size={15} />
             </Link>

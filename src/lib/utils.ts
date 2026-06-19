@@ -1,5 +1,17 @@
 import { clsx, type ClassValue } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { extendTailwindMerge } from 'tailwind-merge'
+
+// Our display/typography classes (globals.css @layer components) are named with
+// a `text-` prefix, so stock tailwind-merge mistakes them for font-size/color
+// utilities and strips them when merged next to `text-[…]`/`text-acid`. Register
+// them as font-family utilities so they survive cn() and only conflict w/ each other.
+const twMerge = extendTailwindMerge({
+  extend: {
+    classGroups: {
+      'font-family': ['text-graffiti', 'text-chunky', 'text-blocky', 'text-tag', 'text-brush'],
+    },
+  },
+})
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

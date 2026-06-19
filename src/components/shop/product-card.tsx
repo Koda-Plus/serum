@@ -9,7 +9,7 @@ import { Badge, MetaChip, DiscountChip, PriceChip } from '@/components/ui/badge'
 import { formatPLN, cn } from '@/lib/utils'
 import { useCart } from '@/store/cart'
 
-// Gold has been removed from the palette — gold-accent products fall back to
+// Gold has been removed from the palette – gold-accent products fall back to
 // chrome so nothing renders yellow.
 export const accentBg: Record<Accent, string> = {
   acid: 'bg-acid text-bone',
@@ -20,7 +20,7 @@ export const accentBg: Record<Accent, string> = {
   chrome: 'bg-chrome text-ink',
 }
 export const accentText: Record<Accent, string> = {
-  acid: 'group-hover:text-acid',
+  acid: 'group-hover:text-acid-light',
   blue: 'group-hover:text-blue',
   violet: 'group-hover:text-violet',
   magenta: 'group-hover:text-magenta',
@@ -99,7 +99,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
         </div>
 
         <div className="mt-3 flex flex-1 flex-col">
-          <h3 className={cn('text-graffiti text-[15px] leading-[1.05] text-bone transition-colors sm:text-base', accentText[product.accent])}>
+          <h3 className={cn('text-graffiti text-[15px] leading-[1.05] text-bone transition-colors group-hover:text-acid-light sm:text-base')}>
             {product.name}
           </h3>
           <div className="mt-auto flex items-center justify-between gap-2 pt-3">

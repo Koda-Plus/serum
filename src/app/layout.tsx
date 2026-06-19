@@ -29,11 +29,20 @@ export const metadata: Metadata = {
     siteName: 'Serum Global',
     locale: 'pl_PL',
     type: 'website',
+    images: [
+      {
+        url: '/open-graph.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Serum Global / streetwear, muzyka i graffiti',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Serum Global / streetwear & graffiti',
     description: 'Kolekcja Eros One ’26, Serum x Tempz, muzyka i Street Gallery.',
+    images: ['/open-graph.jpg'],
   },
   robots: {
     index: false,

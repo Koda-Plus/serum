@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { DotLottieReact, type DotLottie } from '@lottiefiles/dotlottie-react'
 import { ArrowRight, SprayCan } from 'lucide-react'
 import { ButtonLink } from '@/components/ui/button'
 import { Eyebrow, Sticker } from '@/components/ui/badge'
@@ -23,6 +24,28 @@ export function Hero() {
     return () => clearInterval(t)
   }, [])
   const slide = slides[idx]
+
+  // fade the EROIZM wordmark in once the player is ready, then play it
+  // once 1s later (the fade reveals it during that delay)
+  const [lottieReady, setLottieReady] = useState(false)
+  const playTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const handleLottieRef = (dotLottie: DotLottie | null) => {
+    if (playTimer.current) {
+      clearTimeout(playTimer.current)
+      playTimer.current = null
+    }
+    if (!dotLottie) return
+    const start = () => {
+      setLottieReady(true)
+      playTimer.current = setTimeout(() => dotLottie.play(), 900)
+    }
+    dotLottie.addEventListener('load', start)
+  }
+  useEffect(() => {
+    return () => {
+      if (playTimer.current) clearTimeout(playTimer.current)
+    }
+  }, [])
 
   return (
     <section className="relative min-h-[82vh] overflow-hidden bg-ink">
@@ -49,28 +72,38 @@ export function Hero() {
       </div>
 
       {/* content */}
-      <div className="relative mx-auto flex min-h-[82vh] max-w-[1340px] flex-col justify-center px-4 py-24 lg:px-8">
-        <div className="max-w-2xl animate-fade-up">
-          <Eyebrow over icon={<SprayCan size={13} />} className="mb-5">
-            streetwear / graffiti / od 2007
-          </Eyebrow>
-
-          <h1 className="text-graffiti flex flex-col items-start">
-            <span className="flex items-baseline gap-[0.28em] whitespace-nowrap text-[clamp(1.9rem,7.5vw,5.5rem)] leading-[1.05]">
-              <span className="text-bone">NOSISZ</span>
-              <span className="text-acid text-glow-acid">EROIZM</span>
+      <div className="relative mx-auto flex min-h-[82vh] max-w-[1340px] flex-col items-center justify-center px-4 py-24 text-center lg:px-8">
+        <div className="flex w-full flex-col items-center animate-fade-up">
+          <h1 className="text-graffiti flex flex-col items-center">
+            <span className="text-acid-light text-glow-acid text-[clamp(1.9rem,7.5vw,4.5rem)] leading-[1.05] mb-3">
+              NOSISZ
             </span>
-            <span aria-hidden className="mt-3 block h-[4px] w-[clamp(120px,28vw,260px)] bg-gradient-to-r from-acid to-toxic" />
+            <span className="sr-only">EROIZM</span>
+            <motion.span
+              role="img"
+              aria-label="EROIZM"
+              className="relative mt-3 block aspect-[2199/705] w-[clamp(17.5rem,80vw,50rem)]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: lottieReady ? 1 : 0 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+            >
+              <DotLottieReact
+                src="/lotties/eroizm.lottie"
+                dotLottieRefCallback={handleLottieRef}
+                layout={{ fit: 'contain', align: [0.5, 0.5] }}
+                className="absolute inset-0 h-full w-full"
+              />
+            </motion.span>
           </h1>
 
-          <div className="mt-6 max-w-lg border-l-2 border-acid bg-ink/45 py-3 pl-4 pr-4 backdrop-blur-sm">
+          <div className="mt-6 max-w-xl border-x-2 border-acid bg-ink/45 px-5 py-3 backdrop-blur-sm">
             <p className="text-[15px] leading-relaxed text-bone/80 md:text-base">
-              Marka Erosa od 2007 — ubrania, muzyka i graffiti w jednym języku.
+              Marka Erosa od 2007 – ubrania, muzyka i graffiti w jednym języku.
               Nie ciuch, tylko kawałek miasta, który nosisz na sobie.
             </p>
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <ButtonLink href="/sklep" variant="bone" size="lg">
               Zobacz kolekcję <ArrowRight size={18} />
             </ButtonLink>
@@ -81,7 +114,7 @@ export function Hero() {
         </div>
       </div>
 
-      {/* floating new-drop sticker — into the shop filtered to the collection */}
+      {/* floating new-drop sticker – into the shop filtered to the collection */}
       <Link
         href="/sklep?kolekcja=eros-one"
         className="group absolute right-4 top-28 z-10 hidden -rotate-6 lg:block xl:right-10"

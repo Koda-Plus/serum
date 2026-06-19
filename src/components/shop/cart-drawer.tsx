@@ -33,7 +33,7 @@ export function CartDrawer() {
             <div className="slash-divider" />
             <div className="flex items-center justify-between border-b border-ink-300 p-5">
               <div>
-                <div className="font-mono text-[11px] uppercase tracking-[0.3em] text-acid">// koszyk</div>
+                <div className="font-mono text-[11px] uppercase tracking-[0.3em] text-acid-light">// koszyk</div>
                 <h3 className="text-graffiti text-3xl text-bone">Twój skład</h3>
               </div>
               <IconButton variant="outline" aria-label="Zamknij" onClick={() => toggle(false)}>
@@ -44,7 +44,7 @@ export function CartDrawer() {
             <div className="flex-1 overflow-y-auto p-5">
               {items.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
-                  <ShoppingBag size={40} className="text-acid" />
+                  <ShoppingBag size={40} className="text-acid-light" />
                   <div className="text-graffiti text-2xl text-bone">Koszyk jest pusty</div>
                   <p className="max-w-xs text-sm text-bone/60">
                     Wrzuć bluzę Serum x Tempz albo winyl z półki. Wejdź na sklep.
@@ -87,7 +87,7 @@ export function CartDrawer() {
                               <Plus size={12} />
                             </button>
                           </div>
-                          <div className="text-graffiti text-acid">{formatPLN(i.price * i.quantity)}</div>
+                          <div className="text-graffiti text-acid-light">{formatPLN(i.price * i.quantity)}</div>
                         </div>
                       </div>
                       <button
@@ -109,7 +109,7 @@ export function CartDrawer() {
                 <CartLoyaltyNudge total={total()} onClose={() => toggle(false)} />
                 <div className="mb-3 flex items-baseline justify-between">
                   <span className="font-mono text-xs uppercase tracking-[0.3em] text-bone/60">razem</span>
-                  <span className="text-graffiti text-3xl text-acid">{formatPLN(total())}</span>
+                  <span className="text-graffiti text-3xl text-acid-light">{formatPLN(total())}</span>
                 </div>
                 <div className="mb-3 text-xs text-bone/50">Płatność online / Dostawa 48h / 14 dni na zwrot</div>
                 <div className="flex gap-2">
@@ -144,26 +144,26 @@ function CartLoyaltyNudge({ total, onClose }: { total: number; onClose: () => vo
       className="group mb-4 block border border-acid/30 bg-ink/60 p-3 transition-colors hover:border-acid/60"
     >
       <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em]">
-        <span className="text-toxic">Skład Serum</span>
+        <span className="text-acid-light">Skład Serum</span>
         <span className="text-bone/55">ten zakup = +{pts} pkt</span>
       </div>
       <p className="mt-2 text-[12px] leading-snug text-bone/75">
         {free ? (
           <>
-            <span className="text-acid">Darmowa wysyłka odblokowana.</span> Dobierz drugą sztukę —{' '}
+            <span className="text-acid-light">Darmowa wysyłka odblokowana.</span> Dobierz drugą sztukę –{' '}
             <span className="text-bone">nie zawijaj się po jednej</span>, każda to punkty w składzie.
           </>
         ) : (
           <>
             Dobierz za <span className="text-bone">{formatPLN(remaining)}</span> i łapiesz{' '}
-            <span className="text-acid">darmową wysyłkę</span> — nie zawijaj się po jednej.
+            <span className="text-acid-light">darmową wysyłkę</span> – nie zawijaj się po jednej.
           </>
         )}
       </p>
       <div className="mt-2 h-1.5 overflow-hidden bg-ink-200">
         <div className={cn('h-full bg-gradient-to-r from-acid to-toxic transition-[width]')} style={{ width: `${pct}%` }} />
       </div>
-      <span className="mt-2 inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.18em] text-bone/55 transition-colors group-hover:text-acid">
+      <span className="mt-2 inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.18em] text-bone/55 transition-colors group-hover:text-acid-light">
         Rangi składu <ArrowRight size={11} />
       </span>
     </a>

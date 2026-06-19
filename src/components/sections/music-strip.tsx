@@ -12,7 +12,7 @@ import { Badge, MetaChip, PriceChip, TagSticker } from '@/components/ui/badge'
 import { formatPLN, cn } from '@/lib/utils'
 
 /**
- * "Muzyka z półki" — a record crate you dig through, not a tidy cover grid.
+ * "Muzyka z półki" – a record crate you dig through, not a tidy cover grid.
  * One large "pulled" sleeve features on the left (with a vinyl disc peeking out);
  * the rest of the catalogue leans/overlaps in a horizontal crate you flick.
  */
@@ -25,7 +25,7 @@ const FORMATS = [
 ] as const
 
 const fmtLabel = (cat: string) => (cat === 'kaseta' ? 'KASETA' : cat === 'cd' ? 'CD' : cat === 'winyl' ? 'WINYL' : 'ALBUM')
-const artistOf = (name: string) => name.split(/[-–—]/)[0].trim()
+const artistOf = (name: string) => name.split(/[-––]/)[0].trim()
 
 export function MusicStrip() {
   const all = useMemo(() => productsByPillar('muzyka').slice(0, 14), [])
@@ -105,7 +105,7 @@ export function MusicStrip() {
               </div>
 
               <div className="mt-6">
-                <div className="font-mono text-[11px] uppercase tracking-[0.24em] text-acid">{artistOf(featured.name)}</div>
+                <div className="font-mono text-[11px] uppercase tracking-[0.24em] text-acid-light">{artistOf(featured.name)}</div>
                 <h3 className="text-graffiti mt-1 text-2xl leading-tight text-bone md:text-3xl">{featured.name}</h3>
                 <div className="mt-4 flex flex-wrap items-center gap-3">
                   <PriceChip size="pdp">{formatPLN(featured.price)}</PriceChip>
@@ -117,10 +117,10 @@ export function MusicStrip() {
             </div>
           )}
 
-          {/* the crate — flick through it */}
+          {/* the crate – flick through it */}
           <div className="lg:col-span-7">
             <div className="mb-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-bone/40">
-              <span>przesuń — dig the crate</span>
+              <span>przesuń – dig the crate</span>
               <span>{crate.length} wydań</span>
             </div>
             <div className="relative">
@@ -129,7 +129,7 @@ export function MusicStrip() {
                   <CrateSleeve key={p.slug} product={p} index={i} active={p.slug === featuredSlug} onPick={() => setFeaturedSlug(p.slug)} />
                 ))}
               </div>
-              {/* edge zones: click to step, hold (hover) to glide — speed ramps */}
+              {/* edge zones: click to step, hold (hover) to glide – speed ramps */}
               <button
                 type="button"
                 aria-label="Przewiń w lewo"
@@ -138,7 +138,7 @@ export function MusicStrip() {
                 onMouseLeave={stopScroll}
                 className="group/edge absolute inset-y-0 left-0 z-20 flex w-16 cursor-pointer items-center justify-start bg-gradient-to-r from-ink-50 via-ink-50/85 to-transparent pl-1"
               >
-                <span className="flex h-10 w-10 items-center justify-center border border-ink-300 bg-ink/80 text-bone/70 transition-colors group-hover/edge:border-acid group-hover/edge:text-acid">
+                <span className="flex h-10 w-10 items-center justify-center border border-ink-300 bg-ink/80 text-bone/70 transition-colors group-hover/edge:border-acid group-hover/edge:text-acid-light">
                   <ChevronLeft size={20} />
                 </span>
               </button>
@@ -150,7 +150,7 @@ export function MusicStrip() {
                 onMouseLeave={stopScroll}
                 className="group/edge absolute inset-y-0 right-0 z-20 flex w-16 cursor-pointer items-center justify-end bg-gradient-to-l from-ink-50 via-ink-50/85 to-transparent pr-1"
               >
-                <span className="flex h-10 w-10 items-center justify-center border border-ink-300 bg-ink/80 text-bone/70 transition-colors group-hover/edge:border-acid group-hover/edge:text-acid">
+                <span className="flex h-10 w-10 items-center justify-center border border-ink-300 bg-ink/80 text-bone/70 transition-colors group-hover/edge:border-acid group-hover/edge:text-acid-light">
                   <ChevronRight size={20} />
                 </span>
               </button>

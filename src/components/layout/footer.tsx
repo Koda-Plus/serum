@@ -85,11 +85,11 @@ export function Footer() {
 function FooterCol({ title, links }: { title: string; links: [string, string][] }) {
   return (
     <div>
-      <h3 className="text-graffiti mb-4 text-sm tracking-[0.28em] text-acid">{title}</h3>
+      <h3 className="text-graffiti mb-4 text-sm tracking-[0.28em] text-acid-light">{title}</h3>
       <ul className="space-y-2.5">
         {links.map(([label, href]) => (
           <li key={label}>
-            <Link href={href} className="text-sm text-bone/65 transition-colors hover:text-acid">
+            <Link href={href} className="text-sm text-bone/65 transition-colors hover:text-acid-light">
               {label}
             </Link>
           </li>

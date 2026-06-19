@@ -8,14 +8,18 @@
   --color-ink-200: #1c1730;
   --color-ink-300: #2a2342;
   --color-ink-400: #3a3057;
-  --color-bone: #f1f0f7;
+  --color-bone: #ffffff;
   --color-bone-50: #ddd9ea;
 
-  /* SERUM signature, deep muted violet (the wildstyle piece) */
-  --color-acid: #6b46c1;
-  --color-acid-deep: #4b2d92;
-  --color-acid-dark: #21103f;
-  --color-toxic: #9a7ee6;
+  /* SERUM signature violet.
+     acid       = dark purple  – background for WHITE text (AA: 5.89:1)
+     toxic      = light purple – purple TEXT on dark backgrounds (AA: 5.80:1)
+     acid-deep  = darker dark-purple for solid-button hover
+     acid-dark  = deep violet used only for offset hard-shadows */
+  --color-acid: #7047d7;
+  --color-acid-deep: #5634b0;
+  --color-acid-dark: #281858;
+  --color-acid-light: #9970ff;
 
   /* the single hard-shadow ink that every offset box-shadow uses (was an
      inconsistent mix of #060706 and --color-ink scattered across the app) */
@@ -60,7 +64,7 @@
   /* keyboard focus, consistent across every interactive element (the ad-hoc
      buttons had none). Mouse users never see it; keyboard users always do. */
   :focus-visible {
-    outline: 2px solid var(--color-toxic);
+    outline: 2px solid var(--color-acid-light);
     outline-offset: 2px;
   }
 
@@ -75,12 +79,12 @@
   }
   ::-webkit-scrollbar-thumb {
     background:
-      linear-gradient(180deg, #9a7ee6 0%, #6b46c1 35%, #4b2d92 70%, #21103f 100%);
+      linear-gradient(180deg, #9970ff 0%, #7047d7 35%, #5634b0 70%, #281858 100%);
     border: 1px solid #08060f;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -1px 0 rgba(0, 0, 0, 0.4);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #b29aee 0%, #7d56cf 40%, #5a3aa8 100%);
+    background: linear-gradient(180deg, #b7a0ff 0%, #8a5ce0 40%, #6a44c8 100%);
   }
   ::-webkit-scrollbar-corner {
     background: #0a0812;
@@ -88,7 +92,7 @@
 
   /* Firefox */
   * {
-    scrollbar-color: #6b46c1 #0e0b18;
+    scrollbar-color: #7047d7 #0e0b18;
     scrollbar-width: thin;
   }
 
@@ -124,6 +128,10 @@
     -webkit-text-stroke: 2px var(--color-acid);
     color: transparent;
   }
+  .text-stroke-acid-light {
+    -webkit-text-stroke: 2px var(--color-acid-light);
+    color: transparent;
+  }
   .text-stroke-ink {
     -webkit-text-stroke: 2px var(--color-ink);
     color: var(--color-bone);
@@ -142,7 +150,7 @@
   }
 
   /* ----------------------------------------------------------------------
-     BUTTON SYSTEM — one base + variants, all sharing the graffiti hard-shadow
+     BUTTON SYSTEM – one base + variants, all sharing the graffiti hard-shadow
      language. Use the <Button>/<ButtonLink> components (src/components/ui).
      Shadow depth + lift on hover, press into the wall on :active. Sizes are
      applied as Tailwind padding/text utilities on top.
@@ -169,15 +177,15 @@
     transform: none;
   }
 
-  /* violet outline ghost — the default secondary CTA */
+  /* violet outline ghost – the default secondary CTA */
   .btn--ghost {
     background: transparent;
     border: 2px solid var(--color-acid);
-    color: var(--color-toxic);
+    color: var(--color-acid-light);
     box-shadow: 4px 4px 0 var(--color-acid-dark);
   }
   .btn--ghost:hover {
-    background: rgba(107, 70, 193, 0.16);
+    background: rgba(112, 71, 215, 0.16);
     color: var(--color-bone);
     transform: translate(-2px, -2px);
     box-shadow: 6px 6px 0 var(--color-acid-dark);
@@ -187,7 +195,7 @@
     box-shadow: 2px 2px 0 var(--color-acid-dark);
   }
 
-  /* solid violet — wayfinding / identity actions (nav, not purchase) */
+  /* solid violet – wayfinding / identity actions (nav, not purchase) */
   .btn--violet {
     background: var(--color-acid);
     color: var(--color-bone);
@@ -203,7 +211,7 @@
     box-shadow: 2px 2px 0 var(--color-shadow);
   }
 
-  /* bone — light, high-contrast on dark sections */
+  /* bone – light, high-contrast on dark sections */
   .btn--bone {
     background: var(--color-bone);
     color: var(--color-ink);
@@ -218,7 +226,7 @@
     box-shadow: 2px 2px 0 var(--color-acid);
   }
 
-  /* outline — quiet, flat (toolbars/chrome); no hard shadow by design */
+  /* outline – quiet, flat (toolbars/chrome); no hard shadow by design */
   .btn--outline {
     background: transparent;
     border: 2px solid var(--color-bone);
@@ -238,7 +246,7 @@
     color: var(--color-magenta);
   }
 
-  /* icon-square — compact icon-only controls. Solid = real action, outline =
+  /* icon-square – compact icon-only controls. Solid = real action, outline =
      utility/nav. Pair with .btn + a size utility (h-10 w-10 / h-8 w-8). */
   .btn--icon {
     padding: 0;
@@ -260,7 +268,7 @@
     box-shadow: none;
   }
 
-  /* segmented toggle — persistent selected state (sizes, filters). Not a CTA. */
+  /* segmented toggle – persistent selected state (sizes, filters). Not a CTA. */
   .chip-toggle {
     font-family: var(--font-display);
     text-transform: uppercase;
@@ -269,7 +277,7 @@
     align-items: center;
     justify-content: center;
     border: 2px solid var(--color-ink-300);
-    color: rgba(241, 240, 247, 0.7);
+    color: rgba(255, 255, 255, 0.7);
     background: transparent;
     transition: all 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
@@ -301,13 +309,13 @@
 
   /* glows */
   .glow-acid {
-    filter: drop-shadow(0 0 20px rgba(123, 86, 200, 0.5));
+    filter: drop-shadow(0 0 20px rgba(153, 112, 255, 0.5));
   }
   .text-glow-acid {
-    text-shadow: 0 0 28px rgba(123, 86, 200, 0.5), 0 6px 30px rgba(0, 0, 0, 0.65);
+    text-shadow: 0 0 28px rgba(153, 112, 255, 0.5), 0 6px 30px rgba(0, 0, 0, 0.65);
   }
 
-  /* sticker tag — Permanent Marker scrawl tier (brand voice / hand-tag) */
+  /* sticker tag – Permanent Marker scrawl tier (brand voice / hand-tag) */
   .tag-sticker {
     font-family: var(--font-tag);
     background: var(--color-acid);
@@ -347,8 +355,8 @@
 
 /* neon-sign glow pulse, used on the hero EROIZM word */
 @keyframes glow-pulse {
-  0%, 100% { text-shadow: 0 0 20px rgba(123, 86, 200, 0.45), 0 6px 30px rgba(0, 0, 0, 0.6); }
-  50% { text-shadow: 0 0 44px rgba(154, 126, 230, 0.8), 0 0 14px rgba(154, 126, 230, 0.55), 0 6px 30px rgba(0, 0, 0, 0.6); }
+  0%, 100% { text-shadow: 0 0 20px rgba(112, 71, 215, 0.45), 0 6px 30px rgba(0, 0, 0, 0.6); }
+  50% { text-shadow: 0 0 44px rgba(153, 112, 255, 0.8), 0 0 14px rgba(153, 112, 255, 0.55), 0 6px 30px rgba(0, 0, 0, 0.6); }
 }
 .animate-glow-pulse {
   animation: glow-pulse 2.6s ease-in-out infinite;
@@ -375,7 +383,7 @@
   animation: fade-up 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-/* respect users who ask for less motion — kill the looping decorative
+/* respect users who ask for less motion – kill the looping decorative
    animations and long transitions, keep the UI fully usable */
 @media (prefers-reduced-motion: reduce) {
   *,

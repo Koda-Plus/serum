@@ -6,10 +6,10 @@ import Image from 'next/image'
 import { Play, Pause, Radio, RotateCcw, RotateCw, Loader2 } from 'lucide-react'
 
 /**
- * Serum Radio — the sticky bottom bar. Custom graffiti-styled chrome wrapping a
+ * Serum Radio – the sticky bottom bar. Custom graffiti-styled chrome wrapping a
  * hidden Spotify embed, driven through the official Spotify IFrame API so the
  * play button actually plays the track (JWP-site style). Featured cut:
- * Ero JWP — "Nowy Dobrobyt" (Ero is the founder of Serum).
+ * Ero JWP – "Nowy Dobrobyt" (Ero is the founder of Serum).
  */
 
 const TRACK = {
@@ -72,7 +72,7 @@ export function SerumRadio() {
           hostRef.current?.querySelector('iframe')?.setAttribute('loading', 'eager')
           // The controller is usable as soon as we hold it; the separate
           // 'ready' event often fires before we can subscribe, so don't gate
-          // the UI on it — enable controls now.
+          // the UI on it – enable controls now.
           if (!cancelled) setReady(true)
           controller.addListener('ready', () => !cancelled && setReady(true))
           controller.addListener('playback_update', (e) => {
@@ -103,7 +103,7 @@ export function SerumRadio() {
     }
   }, [])
 
-  // smooth ticker — advance the displayed position between Spotify's sparse reports
+  // smooth ticker – advance the displayed position between Spotify's sparse reports
   useEffect(() => {
     if (!playing) return
     const id = setInterval(() => {
@@ -134,7 +134,7 @@ export function SerumRadio() {
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 border-t border-acid/30 bg-ink/95 shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.8)] backdrop-blur-md">
-      {/* progress line on the very top edge — click anywhere to seek */}
+      {/* progress line on the very top edge – click anywhere to seek */}
       <button
         type="button"
         aria-label="Przewiń utwór"
@@ -154,7 +154,7 @@ export function SerumRadio() {
       </button>
 
       <div className="mx-auto flex max-w-[1340px] items-center gap-3 px-3 py-2.5 sm:gap-4 sm:px-6 lg:px-8">
-        {/* cover — doubles as a play/pause toggle */}
+        {/* cover – doubles as a play/pause toggle */}
         <button
           type="button"
           onClick={toggle}
@@ -162,7 +162,7 @@ export function SerumRadio() {
           aria-label={playing ? 'Pauza' : 'Odtwórz'}
           className={`group/cover relative h-12 w-12 shrink-0 overflow-hidden border bg-ink-100 transition-colors disabled:cursor-wait ${playing ? 'border-acid' : 'border-acid/30'}`}
         >
-          <Image src={TRACK.cover} alt={`${TRACK.artist} — ${TRACK.title}`} fill sizes="48px" className="object-cover" />
+          <Image src={TRACK.cover} alt={`${TRACK.artist} – ${TRACK.title}`} fill sizes="48px" className="object-cover" />
           <span className={`absolute inset-0 grid place-items-center bg-ink/55 text-bone transition-opacity ${playing ? 'opacity-0 group-hover/cover:opacity-100' : 'opacity-100 group-hover/cover:opacity-100 sm:opacity-0 sm:group-hover/cover:opacity-100'}`}>
             {playing ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" className="ml-0.5" />}
           </span>
@@ -175,7 +175,7 @@ export function SerumRadio() {
             onClick={() => nudge(-15)}
             aria-label="Cofnij 15 sekund"
             disabled={!ready}
-            className="hidden h-8 w-8 items-center justify-center text-bone/55 transition-colors hover:text-acid disabled:opacity-30 sm:flex"
+            className="hidden h-8 w-8 items-center justify-center text-bone/55 transition-colors hover:text-acid-light disabled:opacity-30 sm:flex"
           >
             <RotateCcw size={15} />
           </button>
@@ -199,7 +199,7 @@ export function SerumRadio() {
             onClick={() => nudge(15)}
             aria-label="Do przodu 15 sekund"
             disabled={!ready}
-            className="hidden h-8 w-8 items-center justify-center text-bone/55 transition-colors hover:text-acid disabled:opacity-30 sm:flex"
+            className="hidden h-8 w-8 items-center justify-center text-bone/55 transition-colors hover:text-acid-light disabled:opacity-30 sm:flex"
           >
             <RotateCw size={15} />
           </button>
@@ -208,7 +208,7 @@ export function SerumRadio() {
         {/* track info */}
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="hidden items-center gap-1.5 rounded-sm bg-acid/15 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.22em] text-toxic sm:inline-flex">
+            <span className="hidden items-center gap-1.5 rounded-sm bg-acid/15 px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.22em] text-acid-light sm:inline-flex">
               {playing ? (
                 <span className="relative flex h-1.5 w-1.5" aria-hidden>
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-acid opacity-75" />
@@ -236,7 +236,7 @@ export function SerumRadio() {
         {/* time + equalizer */}
         <div className="hidden items-center gap-4 sm:flex">
           <span className="font-mono text-[11px] tabular-nums text-bone/50">
-            {fmt(displayMs)} <span className="text-bone/25">/ {dur ? fmt(dur) : '—:—'}</span>
+            {fmt(displayMs)} <span className="text-bone/25">/ {dur ? fmt(dur) : '–:–'}</span>
           </span>
           <div className="flex h-7 items-end gap-[3px]" aria-hidden>
             {[0, 1, 2, 3, 4].map((i) => (
@@ -254,14 +254,14 @@ export function SerumRadio() {
 
         <Link
           href="/muzyka"
-          className="text-graffiti shrink-0 border border-ink-300 px-3 py-1.5 text-[11px] text-bone transition-colors hover:border-acid hover:text-acid"
+          className="font-semibold uppercase tracking-wide shrink-0 border border-ink-300 px-3 py-1.5 text-[11px] text-bone transition-colors hover:border-acid hover:text-acid-light"
         >
           <span className="hidden sm:inline">pełna </span>muzyka
         </Link>
       </div>
 
       {/* Real Spotify embed driving playback via the IFrame API. Kept ON-SCREEN
-          behind the bar (z-index/opacity hidden) — if parked off-screen its
+          behind the bar (z-index/opacity hidden) – if parked off-screen its
           loading="lazy" iframe never enters the viewport and never loads, so the
           play button does nothing. On-screen + opacity 0 still plays audio. */}
       <div

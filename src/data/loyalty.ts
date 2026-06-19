@@ -1,7 +1,7 @@
-// "SKŁAD SERUM" — loyalty program (crew framing, no drug/veins connotations).
+// "SKŁAD SERUM" – loyalty program (crew framing, no drug/veins connotations).
 // Points are collected per złoty spent; ranks follow a graffiti/crew progression
 // with realistic, believable perks. Thresholds tuned so a second hoodie reaches
-// BOMBER (free shipping forever) — building a wardrobe pays.
+// BOMBER (free shipping forever) – building a wardrobe pays.
 
 export type RankAccent = 'violet' | 'blue' | 'chrome' | 'bone'
 
@@ -15,7 +15,7 @@ export interface Rank {
   tagline: string
   perks: string[]
   accent: RankAccent
-  /** placeholder rank — name + perks not decided yet */
+  /** placeholder rank – name + perks not decided yet */
   tbd?: boolean
 }
 
@@ -35,7 +35,7 @@ export const ranks: Rank[] = [
     pts: 500,
     gate: '500 pkt',
     tagline: 'Robisz to regularnie.',
-    perks: ['−10% na stałe', 'Darmowa wysyłka — zawsze', 'Dropy 24h przed wszystkimi'],
+    perks: ['−10% na stałe', 'Darmowa wysyłka – zawsze', 'Dropy 24h przed wszystkimi'],
     accent: 'blue',
   },
   {
@@ -53,7 +53,7 @@ export const ranks: Rank[] = [
     name: 'X',
     pts: 3000,
     gate: '3000 pkt',
-    tagline: 'Top ekipy — szykujemy coś grubego.',
+    tagline: 'Top ekipy – szykujemy coś grubego.',
     perks: [],
     accent: 'bone',
     tbd: true,
@@ -63,7 +63,7 @@ export const ranks: Rank[] = [
 /** 1 zł spent = 1 point. Full set (bluza + spodnie + czapka) doubles it. */
 export const POINTS_PER_PLN = 1
 
-/** Free-shipping threshold (zł) — the most actionable in-cart milestone. */
+/** Free-shipping threshold (zł) – the most actionable in-cart milestone. */
 export const FREE_SHIPPING_PLN = 299
 
 /** Given a cart total (zł), the points it earns. */
@@ -78,7 +78,7 @@ export const accentFill: Record<RankAccent, string> = {
   bone: 'bg-bone text-ink',
 }
 export const accentText: Record<RankAccent, string> = {
-  violet: 'text-acid',
+  violet: 'text-acid-light',
   blue: 'text-blue',
   chrome: 'text-chrome',
   bone: 'text-bone',

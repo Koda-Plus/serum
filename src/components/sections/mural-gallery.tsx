@@ -32,12 +32,12 @@ export function MuralGallery() {
             {/* index + tag + zoom affordance */}
             <div className="absolute inset-x-3 top-3 flex items-center justify-between">
               <span className="text-graffiti text-stroke-acid text-2xl leading-none opacity-70">{String(i + 1).padStart(2, '0')}</span>
-              <span className="bg-ink/85 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.18em] text-toxic backdrop-blur-sm">{TAG_PL[m.tag] ?? m.tag}</span>
+              <span className="bg-ink/85 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.18em] text-acid-light backdrop-blur-sm">{TAG_PL[m.tag] ?? m.tag}</span>
             </div>
             <Maximize2 size={16} className="absolute right-3 bottom-3 text-bone opacity-0 transition-opacity group-hover:opacity-100" />
             <div className="absolute bottom-0 left-0 p-3 text-left">
               <div className="text-graffiti text-base text-bone md:text-xl">{m.title}</div>
-              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-acid">{m.credit} · {m.year}</div>
+              <div className="font-mono text-[10px] uppercase tracking-[0.16em] text-acid-light">{m.credit} · {m.year}</div>
             </div>
           </button>
         ))}
@@ -75,7 +75,7 @@ export function MuralGallery() {
               <figcaption className="mt-3 flex items-center justify-between">
                 <div>
                   <div className="text-graffiti text-xl text-bone">{murals[open].title}</div>
-                  <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-acid">{murals[open].credit} / {murals[open].year}</div>
+                  <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-acid-light">{murals[open].credit} / {murals[open].year}</div>
                 </div>
                 <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-bone/40">{open + 1} / {murals.length}</div>
               </figcaption>

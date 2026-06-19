@@ -38,7 +38,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: Size
   /** swaps label for a spinner and disables interaction */
   loading?: boolean
-  /** flashes a success state (e.g. "Dodano") — caller controls timing */
+  /** flashes a success state (e.g. "Dodano") – caller controls timing */
   success?: boolean
   successLabel?: React.ReactNode
 }
@@ -53,7 +53,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       disabled={disabled || loading}
       className={cn(
         buttonVariants({ variant, size }),
-        success && '!bg-[var(--color-toxic)] !text-ink',
+        success && '!bg-[var(--color-acid-light)] !text-ink',
         className,
       )}
       {...rest}
@@ -112,7 +112,7 @@ type IconSize = NonNullable<VariantProps<typeof iconVariants>['size']>
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: IconVariant
   size?: IconSize
-  /** required — icon-only controls must be labelled */
+  /** required – icon-only controls must be labelled */
   'aria-label': string
 }
 

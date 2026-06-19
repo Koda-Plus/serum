@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import Image from 'next/image'
 import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
@@ -11,15 +11,15 @@ import { cn, formatPLN } from '@/lib/utils'
 import { useCart } from '@/store/cart'
 
 /**
- * Gadgets — instead of seven near-identical belt cards, sell ONE belt seven ways:
+ * Gadgets – instead of seven near-identical belt cards, sell ONE belt seven ways:
  * a single large hero detail + a colourway swatch picker that swaps it in place.
  * Repetition becomes "wybierz swój kolor" rather than a monotonous grid.
  */
 
 const COLOR: Record<string, string> = {
   czarny: '#0a0812',
-  biały: '#f1f0f7',
-  bialy: '#f1f0f7',
+  biały: '#ffffff',
+  bialy: '#ffffff',
   szary: '#6f6a7e',
   srebrny: '#c7c2d8',
   zielony: '#4b7a4e',
@@ -31,7 +31,7 @@ const COLOR: Record<string, string> = {
 function swatch(name: string): [string, string] {
   const tail = name.split(' - ').pop() ?? name
   const parts = tail.split('/').map((s) => s.trim().toLowerCase())
-  const a = COLOR[parts[0]] ?? '#6b46c1'
+  const a = COLOR[parts[0]] ?? '#7047d7'
   const b = COLOR[parts[1] ?? parts[0]] ?? a
   return [a, b]
 }
@@ -97,10 +97,10 @@ export function GadgetsStrip() {
             <div>
               <div className="flex items-baseline justify-between">
                 <Eyebrow>{items.length} kolorów</Eyebrow>
-                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-acid">{colourway(belt.name)}</span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-acid-light">{colourway(belt.name)}</span>
               </div>
               <p className="mt-3 max-w-sm text-sm leading-relaxed text-bone/60">
-                Jeden pasek, parciany splot z logo Serum i metalowa klamra. Wybierz swój kolor —
+                Jeden pasek, parciany splot z logo Serum i metalowa klamra. Wybierz swój kolor –
                 pasuje do każdego dropu z kolekcji.
               </p>
 
@@ -158,11 +158,15 @@ export function GadgetsStrip() {
         </div>
       </div>
 
-      {/* webbing marquee */}
+      {/* webbing marquee — matches the top TagMarquee: uniform gap, ✦ centered between labels.
+          16 = two identical 8-item halves, so translateX(-50%) loops with no gap/jump. */}
       <div className="relative overflow-hidden border-t border-ink-300 py-3">
-        <div className="flex w-max animate-marquee">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <span key={i} className="text-graffiti px-6 text-2xl text-bone/10">SERUM GLOBAL ·</span>
+        <div className="flex w-max items-center gap-8 animate-marquee">
+          {Array.from({ length: 16 }).map((_, i) => (
+            <Fragment key={i}>
+              <span className="text-graffiti text-2xl text-bone/40 md:text-3xl">SERUM GLOBAL</span>
+              <span className="text-acid-light" aria-hidden>✦</span>
+            </Fragment>
           ))}
         </div>
       </div>

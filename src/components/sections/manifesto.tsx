@@ -6,9 +6,9 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import { Eyebrow } from '@/components/ui/badge'
 
 /**
- * Manifesto — a centered brand statement over a faint full-bleed mural, with the
+ * Manifesto – a centered brand statement over a faint full-bleed mural, with the
  * real heritage year "2007" as an oversized outline stamp behind the heading.
- * No quote, no fake metrics — one centred lockup.
+ * No quote, no fake metrics – one centred lockup.
  */
 export function Manifesto() {
   const ref = useRef<HTMLDivElement>(null)
@@ -43,15 +43,15 @@ export function Manifesto() {
             <Eyebrow className="mb-5">manifest · od 2007</Eyebrow>
           </div>
           <h2 className="text-graffiti mx-auto max-w-3xl pb-1 text-[clamp(2.2rem,6.5vw,5rem)] leading-[1.06] text-bone">
-            Marka, która <span className="text-acid text-glow-acid">wyrosła ze ściany</span>
+            Marka, która <span className="text-acid-light text-glow-acid">wyrosła ze ściany</span>
           </h2>
           <p className="mx-auto mt-7 max-w-xl text-base leading-relaxed text-bone/75">
-            Serum Global zaczęło się od graffiti — od nocy z puszką i porannego podziwiania świeżego
+            Serum Global zaczęło się od graffiti – od nocy z puszką i porannego podziwiania świeżego
             piece&apos;a. Od 2007 roku zamieniamy ten język w ubrania, muzykę i sztukę. Nie sprzedajemy
             trendu. Sprzedajemy kawałek miasta, który nosisz na sobie.
           </p>
           <div className="mt-8 flex items-center justify-center gap-2 font-mono text-[11px] uppercase tracking-[0.24em] text-bone/55">
-            z puszki na ścianę <span className="text-brush text-lg text-acid">→</span> ze ściany na merch
+            z puszki na ścianę <span className="text-brush text-lg text-acid-light">→</span> ze ściany na merch
           </div>
         </motion.div>
       </div>

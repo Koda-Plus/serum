@@ -35,7 +35,7 @@ export function Header() {
         <Link href="/" className="flex shrink-0 items-center gap-3" aria-label="Serum Global, strona główna">
           <SerumLogo className="h-10 md:h-12" />
         </Link>
-        <span className="hidden items-center rounded-sm border border-acid/40 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.28em] text-acid xl:inline-flex">
+        <span className="hidden items-center rounded-sm border border-toxic/40 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.28em] text-acid-light xl:inline-flex">
           streetwear / graffiti / since 2007
         </span>
 
@@ -46,7 +46,7 @@ export function Header() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="text-graffiti group relative ml-1 inline-flex items-center gap-1.5 bg-acid px-3 py-2 text-sm text-bone shadow-[3px_3px_0_var(--color-shadow)] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-acid-deep hover:shadow-[4px_4px_0_var(--color-shadow)]"
+                  className="font-semibold uppercase tracking-wide group relative ml-1 inline-flex items-center gap-1.5 bg-acid px-3 py-2 text-sm text-bone shadow-[3px_3px_0_var(--color-shadow)] transition-all hover:translate-x-[-1px] hover:translate-y-[-1px] hover:bg-acid-deep hover:shadow-[4px_4px_0_var(--color-shadow)]"
                 >
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-bone/60" />
@@ -58,7 +58,7 @@ export function Header() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="text-graffiti group relative px-3 py-2 text-sm text-bone transition-colors hover:text-acid"
+                  className="font-semibold uppercase tracking-wide group relative px-3 py-2 text-sm text-bone transition-colors hover:text-acid-light"
                 >
                   {l.label}
                   <span className="absolute inset-x-3 bottom-1 h-[2px] origin-left scale-x-0 bg-acid transition-transform duration-200 group-hover:scale-x-100" />
@@ -73,7 +73,7 @@ export function Header() {
           <button
             type="button"
             onClick={() => toggle(true)}
-            className="text-graffiti relative flex items-center gap-2 border-2 border-bone px-3 py-2 text-xs text-bone transition-all hover:border-acid hover:text-acid"
+            className="font-semibold uppercase tracking-wide relative flex items-center gap-2 border-2 border-bone px-3 py-2 text-xs text-bone transition-all hover:border-acid hover:text-acid-light"
             aria-label="Koszyk"
           >
             <ShoppingBag size={16} />
@@ -105,7 +105,7 @@ export function Header() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="text-graffiti border-l-4 border-acid bg-ink px-4 py-3 text-sm text-bone"
+                className="font-semibold uppercase tracking-wide border-l-4 border-acid bg-ink px-4 py-3 text-sm text-bone"
               >
                 {l.label}
               </Link>

@@ -11,7 +11,7 @@ import { ButtonLink } from '@/components/ui/button'
 import { formatPLN } from '@/lib/utils'
 
 /**
- * "ZE ŚCIANY NA MERCH" — full-screen mural "plates" that STACK: each plate is
+ * "ZE ŚCIANY NA MERCH" – full-screen mural "plates" that STACK: each plate is
  * sticky, so the next one slides up from underneath and covers the previous as
  * you scroll. Pure CSS sticky stacking = buttery smooth, no scroll-jacking.
  * Murals fill the viewport; matched products are advertised on their plate.
@@ -53,7 +53,7 @@ function Plate({ plate, index, total }: { plate: Plate; index: number; total: nu
 
   return (
     <section className="sticky top-0 h-[100svh] overflow-hidden bg-ink shadow-[0_-30px_70px_-10px_rgba(0,0,0,0.7)]">
-      {/* top edge highlight — reads as the plate sliding over the previous one */}
+      {/* top edge highlight – reads as the plate sliding over the previous one */}
       <div className="absolute inset-x-0 top-0 z-30 h-[3px] bg-gradient-to-r from-transparent via-acid to-transparent" />
 
       {/* full-bleed mural */}
@@ -77,9 +77,9 @@ function Plate({ plate, index, total }: { plate: Plate; index: number; total: nu
           <Eyebrow over>Ze ściany na merch · plate {num}</Eyebrow>
           <Link
             href="/street"
-            className="text-graffiti hidden items-center gap-1.5 border-b-2 border-acid pb-0.5 text-xs text-bone transition-colors hover:text-acid sm:inline-flex"
+            className="font-semibold uppercase tracking-wide hidden items-center gap-1.5 border-b-2 border-acid pb-1 text-sm text-bone transition-colors hover:text-acid-light sm:inline-flex"
           >
-            całe archiwum <ArrowUpRight size={14} />
+            całe archiwum <ArrowUpRight size={16} />
           </Link>
         </div>
 
@@ -97,14 +97,14 @@ function Plate({ plate, index, total }: { plate: Plate; index: number; total: nu
                 style={{ textShadow: '0 2px 30px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.7)' }}
               >
                 {plate.lead}
-                <span className="text-acid text-glow-acid">{plate.glow}</span>
+                <span className="text-acid-light text-glow-acid">{plate.glow}</span>
                 {plate.tail}
               </h3>
               <div className="mt-6 inline-flex w-fit flex-wrap items-center gap-x-5 gap-y-1.5 border border-bone/10 bg-ink/55 px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.18em] backdrop-blur-sm">
                 <span className="text-bone/55">autor <span className="ml-1 text-bone">{mural.credit}</span></span>
                 <span className="text-bone/55">rok <span className="ml-1 text-bone">{mural.year}</span></span>
                 <span className="text-bone/55">typ <span className="ml-1 text-bone">{TAG_PL[mural.tag] ?? mural.tag}</span></span>
-                <span className="text-acid">{num} / {String(total).padStart(2, '0')}</span>
+                <span className="text-acid-light">{num} / {String(total).padStart(2, '0')}</span>
               </div>
             </motion.div>
 
@@ -118,7 +118,7 @@ function Plate({ plate, index, total }: { plate: Plate; index: number; total: nu
             >
               {garment ? (
                 <>
-                  <div className="mb-3 flex items-center gap-2 px-0.5 font-mono text-[11px] uppercase tracking-[0.22em] text-toxic">
+                  <div className="mb-3 flex items-center gap-2 px-0.5 font-mono text-[11px] uppercase tracking-[0.22em] text-acid-light">
                     ze ściany <MoveRight size={14} /> na merch
                   </div>
                   <Link href={`/produkt/${garment.slug}`} className="group/g block">
@@ -127,8 +127,8 @@ function Plate({ plate, index, total }: { plate: Plate; index: number; total: nu
                       <ArrowUpRight size={20} className="absolute right-3 top-3 text-bone opacity-0 transition-opacity group-hover/g:opacity-100" />
                     </div>
                     <div className="mt-3 flex items-end justify-between gap-3">
-                      <div className="text-graffiti text-base leading-tight text-bone transition-colors group-hover/g:text-toxic md:text-lg">{garment.name}</div>
-                      <span className="text-graffiti shrink-0 bg-acid px-2.5 py-1 text-sm text-bone shadow-[2px_2px_0_var(--color-shadow)]">{formatPLN(garment.price)}</span>
+                      <div className="text-graffiti text-base leading-tight text-bone transition-colors group-hover/g:text-acid-light md:text-lg">{garment.name}</div>
+                      <span className="text-graffiti shrink-0 bg-acid px-2.5 py-1 text-base text-bone shadow-[2px_2px_0_var(--color-shadow)]">{formatPLN(garment.price)}</span>
                     </div>
                   </Link>
                   <ButtonLink href={`/produkt/${garment.slug}`} variant="violet" size="md" className="mt-3 w-full">
@@ -137,7 +137,7 @@ function Plate({ plate, index, total }: { plate: Plate; index: number; total: nu
                 </>
               ) : (
                 <>
-                  <div className="mb-3 flex items-center gap-2 px-0.5 font-mono text-[11px] uppercase tracking-[0.22em] text-toxic">
+                  <div className="mb-3 flex items-center gap-2 px-0.5 font-mono text-[11px] uppercase tracking-[0.22em] text-acid-light">
                     ze ściany <MoveRight size={14} /> na ścianę
                   </div>
                   <div className="relative aspect-[4/3] w-full overflow-hidden border-2 border-ink-300 bg-ink-100">
