@@ -41,6 +41,29 @@
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
+/* Jankora Street – graffiti marker handstyle (added to /public/fonts). Used for
+   the hero lyric, and swappable across the whole project via the footer toggle. */
+@font-face {
+  font-family: 'Jankora Street';
+  src: url('/fonts/JankoraStreet-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* footer toggle: render the ENTIRE project in Jankora Street for a quick preview.
+   Overrides every font token, so headings, body and mono all switch at once. */
+html.font-jankora {
+  --font-display: 'Jankora Street', system-ui, sans-serif;
+  --font-graffiti: 'Jankora Street', system-ui, sans-serif;
+  --font-graffiti-shade: 'Jankora Street', system-ui, sans-serif;
+  --font-blocky: 'Jankora Street', system-ui, sans-serif;
+  --font-body: 'Jankora Street', system-ui, sans-serif;
+  --font-tag: 'Jankora Street', cursive;
+  --font-brush: 'Jankora Street', cursive;
+  --font-mono: 'Jankora Street', ui-monospace, monospace;
+}
+
 @layer base {
   :root {
     color-scheme: dark;
@@ -122,6 +145,22 @@
   }
   .text-brush {
     font-family: var(--font-brush);
+  }
+  /* Jankora Street graffiti handstyle – used for the hero lyric */
+  .text-handstyle {
+    font-family: 'Jankora Street', var(--font-tag), cursive;
+  }
+
+  /* hand-drawn marker underline – a graffiti tag stroke under the words,
+     stretches to the text width and survives line wraps (clone) */
+  .underline-graffiti {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 16' preserveAspectRatio='none'%3E%3Cpath d='M2 11 C 46 3 82 14 122 7 C 156 1 184 12 198 8' fill='none' stroke='%239970ff' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center 100%;
+    background-size: 100% 0.4em;
+    padding-bottom: 0.16em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
   }
 
   .text-stroke-acid {
@@ -364,12 +403,6 @@
 }
 .animate-fade-up {
   animation: fade-up 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-
-/* hero lyric "now playing" equalizer bars */
-@keyframes eq {
-  0%, 100% { transform: scaleY(0.3); }
-  50% { transform: scaleY(1); }
 }
 
 /* respect users who ask for less motion – kill the looping decorative

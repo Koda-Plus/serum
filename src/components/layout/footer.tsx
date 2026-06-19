@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Instagram, Youtube, Facebook } from 'lucide-react'
 import { SerumLogo } from '@/components/brand/logo'
+import { FontToggle } from '@/components/layout/font-toggle'
 
 const muralStrip = ['/images/serum/mural-eagle.jpg', '/images/serum/mural-2.jpg', '/images/serum/mural-3.jpg']
 
@@ -75,8 +76,11 @@ export function Footer() {
       </div>
 
       <div className="border-t border-ink-300 bg-ink py-4">
-        <div className="mx-auto max-w-[1340px] px-4 text-center font-mono text-[10px] uppercase tracking-[0.25em] text-bone/45 sm:text-left lg:px-8">
-          © 2007-2026 Serum Global / projekt &amp; demo: KODA+
+        <div className="mx-auto flex max-w-[1340px] flex-col items-center gap-3 px-4 sm:flex-row sm:justify-between lg:px-8">
+          <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/45">
+            © 2007-2026 Serum Global / projekt &amp; demo: KODA+
+          </div>
+          <FontToggle />
         </div>
       </div>
     </footer>
